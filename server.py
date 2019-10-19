@@ -35,26 +35,26 @@ def allwed_file(filename):
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
-    # リクエストがポストかどうかの判別
-    if request.method == 'POST':
-        # ファイルがなかった場合の処理
-        if 'file' not in request.files:
-            flash('ファイルがありません')
-            return redirect(request.url)
-        # データの取り出し
-        file = request.files['file']
-        # ファイル名がなかった時の処理
-        if file.filename == '':
-            flash('ファイルがありません')
-            return redirect(request.url)
-        # ファイルのチェック
-        if file and allwed_file(file.filename):
-            # 危険な文字を削除（サニタイズ処理）
-            filename = secure_filename(file.filename)
-            # ファイルの保存
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # アップロード後のページに転送
-            return redirect(url_for('uploaded_file', filename=filename))
+    # # リクエストがポストかどうかの判別
+    # if request.method == 'POST':
+    #     # ファイルがなかった場合の処理
+    #     if 'file' not in request.files:
+    #         flash('ファイルがありません')
+    #         return redirect(request.url)
+    #     # データの取り出し
+    #     file = request.files['file']
+    #     # ファイル名がなかった時の処理
+    #     if file.filename == '':
+    #         flash('ファイルがありません')
+    #         return redirect(request.url)
+    #     # ファイルのチェック
+    #     if file and allwed_file(file.filename):
+    #         # 危険な文字を削除（サニタイズ処理）
+    #         filename = secure_filename(file.filename)
+    #         # ファイルの保存
+    #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    #         # アップロード後のページに転送
+    #         return redirect(url_for('uploaded_file', filename=filename))
     return render_template('index.html')
 
 
@@ -121,8 +121,8 @@ def predict():
                         res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=5)
                     except:
                         print('Error! Can not connect to the API.')
-                        #return []
-                        sys.exit(1)
+                        return []
+                        # sys.exit(1)
 
                     # Get response
                     if res.status_code == 200:
@@ -175,7 +175,9 @@ def predict():
                         frameNo = video.get(cv2.CAP_PROP_POS_FRAMES)
 
                         # call API with frameRateAPI
-                        results = sendRequest(image, width, height)
+                        results = []
+                        while not results:
+                            results = sendRequest(image, width, height)
 
                         #######################################################################
                         # Edit for your application
@@ -205,9 +207,13 @@ def predict():
                         writer.write(image)
 
                 ### Main ######################################################################
-                videoSource = img.filename
+                file = request.files['file']
+                videoSource = os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
+                file.save(videoSource)
                 print("videonSouse", videoSource)
+                print("app",app.config['UPLOAD_FOLDER'])
                 videoReader(videoSource)
+
 
             except:
                 return render_template('index.html',massege = "解析出来ませんでした",color = "red")
