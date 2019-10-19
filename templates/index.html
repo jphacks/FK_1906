@@ -73,5 +73,22 @@
           });
         });
       </script>
+    <h1>Web Audio APIによる音声の波形表示</h1>
+    <h2>ControlPanel</h2>
+    <div class="inner">
+      <div id="control">
+        <button id="btn-play">play</button>
+        <button id="btn-stop">stop</button>
+        <input type="file" id="audio-input" value="">
+        <button id="btn-clear">clear</button>
+      </div>
+    </div>
+    <h2>波形表示</h2>
+    <div class="inner">
+      <canvas id="audio-visual" width="1280" height="700"></canvas>
+      <audio id="audio-player" loop></audio>
+    </div>
+
+    <script src="effect.js"></script>
   </body>
 </html>
