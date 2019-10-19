@@ -175,29 +175,8 @@ def videoReader(videoSource):
         print(gaze_duration)
         writer.write(image)
 
-    yaw_list, pich_list = zip(*gaze_list)
-    yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
-    yaw_mean,  yaw_var  = np.mean(yaw_list),  np.var(yaw_list)
-    pich_mean, pich_var = np.mean(pich_list), np.var(pich_list)
-
-    print("[yaw] mean: {}, var: {}".format(yaw_mean, yaw_var))
-    print("[pich] mean: {}, var: {}".format(pich_mean, pich_var))
-
-    center_range = np.array([-10, 10])
-    LEFT   = 0
-    CENTER = 1
-    RIGHT  = 2
-    yaw_distribution = {LEFT: 0, CENTER: 0, RIGHT: 0}
-    for yaw in yaw_list:
-        pos = np.digitize(yaw, bins=center_range)
-        yaw_distribution[pos] += 1
-
-    num_total = float(len(yaw_list))
-    left_rate   = yaw_distribution[LEFT]   / num_total
-    center_rate = yaw_distribution[CENTER] / num_total
-    right_rate  = yaw_distribution[RIGHT]  / num_total
-    print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
     video.release()
+    return gaze_list
 
 ### Main ######################################################################
 if __name__ == "__main__":

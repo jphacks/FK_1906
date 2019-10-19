@@ -8,6 +8,7 @@ import requests
 import numpy
 import threading
 import queue
+import numpy as np
 
 import os
 import io
@@ -89,9 +90,33 @@ def predict():
                 file.save(videoSource)
                 print("videonSouse", videoSource)
                 print("app",app.config['UPLOAD_FOLDER'])
-                videoReader(videoSource)
+                gaze_list = videoReader(videoSource)
+                yaw_list, pich_list = zip(*gaze_list)
+                yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
+                yaw_mean,  yaw_var  = np.mean(yaw_list),  np.var(yaw_list)
+                pich_mean, pich_var = np.mean(pich_list), np.var(pich_list)
 
-            except:
+                print("[yaw] mean: {}, var: {}".format(yaw_mean, yaw_var))
+                print("[pich] mean: {}, var: {}".format(pich_mean, pich_var))
+
+                center_range = np.array([-10, 10])
+                LEFT   = 0
+                CENTER = 1
+                RIGHT  = 2
+                yaw_distribution = {LEFT: 0, CENTER: 0, RIGHT: 0}
+                for yaw in yaw_list:
+                    pos = np.digitize(yaw, bins=center_range)
+                    yaw_distribution[pos] += 1
+
+                num_total = float(len(yaw_list))
+                left_rate   = yaw_distribution[LEFT]   / num_total
+                center_rate = yaw_distribution[CENTER] / num_total
+                right_rate  = yaw_distribution[RIGHT]  / num_total
+                print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
+                return render_template("index.html")
+
+            except Exception as e:
+                print(e)
                 return render_template('index.html',massege = "解析出来ませんでした",color = "red")
 
             #  buf = io.BytesIO()
@@ -100,7 +125,6 @@ def predict():
             #  qr_b64str = base64.b64encode(buf.getvalue()).decode("utf-8")
             #  qr_b64data = "data:image/png;base64,{}".format(qr_b64str)
 
-            return render_template("index.html")
             #  return render_template('index.html', img=qr_b64data, pre1_img_url=pre1_img_url, pre1_detail=pre1_detail, pre1_pro=pre1_pro, pre2_img_url=pre2_img_url, pre2_detail=pre2_detail, pre2_pro=pre2_pro, pre3_img_url=pre3_img_url, pre3_detail=pre3_detail, pre3_pro=pre3_pro)
     else:
         print("get request")
