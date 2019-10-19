@@ -22,6 +22,7 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
 from api import videoReader
+from sound import analyze_sound
 import matplotlib.pyplot as plt
 
 app = Flask(__name__)
@@ -69,6 +70,7 @@ def predict():
                 file.save(videoSource)
                 print("videonSouse", videoSource)
                 print("app",app.config['UPLOAD_FOLDER'])
+                sound_analize_result = analyze_sound(videoSource)
                 gaze_list = videoReader(videoSource)
                 yaw_list, pich_list = zip(*gaze_list)
                 yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
@@ -104,15 +106,20 @@ def predict():
 
                 kwargs = {
                     "predicted"  : True,
-                    "yaw_mean"   : yaw_mean,
-                    "yaw_var"    : yaw_var,
-                    "pich_mean"  : pich_mean,
-                    "pich_var"   : pich_var,
-                    "left_rate"  : left_rate,
-                    "center_rate": center_rate,
+                    "yaw_mean"   : yaw_mean, 
+                    "yaw_var"    : yaw_var, 
+                    "pich_mean"  : pich_mean, 
+                    "pich_var"   : pich_var, 
+                    "left_rate"  : left_rate, 
+                    "center_rate": center_rate, 
                     "right_rate" : right_rate,
+                    "amp_mean"   : sound_analize_result["amplitudes"]["mean"],
+                    "amp_var"    : sound_analize_result["amplitudes"]["var"],
+                    "fle_mean"   : sound_analize_result["fleurie"]["mean"],
+                    "fle_var"    : sound_analize_result["fleurie"]["var"],
                     "plot_url"   : plot_b64data
                 }
+                print(kwargs)
                 return render_template("index.html", **kwargs)
 
             except Exception as e:
