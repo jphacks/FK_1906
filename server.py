@@ -80,11 +80,11 @@ def predict():
 
                 gaze_list = videoReader(videoSource)
 
-                editedVideoSource = os.path.join(app.config['UPLOAD_FOLDER'], "edited.mp4")
+                editedVideoSource = os.path.join(app.config['UPLOAD_FOLDER'], "edited.avi")
 
                 # Add audio to output video.
                 clip_output = mp.VideoFileClip(editedVideoSource).subclip()
-                clip_output.write_videofile(editedVideoSource, audio='audio.mp3')
+                clip_output.write_videofile(editedVideoSource.replace('.avi', '.mp4'), audio='audio.mp3')
 
 
                 yaw_list, pich_list = zip(*gaze_list)
