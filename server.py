@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 import moviepy.editor as mp
 
 app = Flask(__name__)
-now_loading = True
+
 
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
@@ -46,12 +46,7 @@ def allwed_file(filename):
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
-    return render_template('index.html', now_loading=now_loading)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-@app.route('/predict', methods=['GET','POST'])
-def predict():
+    now_loading = True
     if request.method == "POST":
         if 'file' not in request.files:
             print("ファイルがありません")
@@ -122,6 +117,7 @@ def predict():
 
                 score = calc_score(yaw_mean, yaw_var, pich_mean, 
                         sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"])
+                plt.clf()
 
                 kwargs = {
                     "predicted"  : True,
@@ -139,8 +135,8 @@ def predict():
                     "plot_url"   : plot_b64data,
                     "score": score
                 }
-                
-                now_loading = False 
+
+                now_loading = False
                 return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
@@ -149,12 +145,11 @@ def predict():
 
     else:
         print("get request")
+        return render_template('index.html', now_loading=now_loading)
 
-    return render_template('index.html')
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/uploads/<filename>')
-# ファイルを表示する
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
