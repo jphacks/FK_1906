@@ -103,6 +103,7 @@ def videoReader(videoSource):
     gaze = None
     gazeLen = width / 5
     gazeColor = (0, 255, 0)
+    gaze_line_params = []
 
     # Create video writer
     #  fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
@@ -119,6 +120,8 @@ def videoReader(videoSource):
         start_time = time.time()
 
         success, image = video.read()
+        for line_param in gaze_line_params:
+            cv2.arrowedLine(image, *line_param, gazeColor, thickness=2)
 
         # Read a frame
         if i % int(fps/2) != 0:
@@ -162,7 +165,7 @@ def videoReader(videoSource):
             cv2.circle(image, (int(leye[0]), int(leye[1])), 15, eyesColor, thickness=2)
             center = ((reye[0]+leye[0])/2, (reye[1]+leye[1])/2)
             gazeTop = (center[0] + gazeLen * math.sin(math.radians(gaze[0])), center[1] + gazeLen * math.sin(math.radians(gaze[1])))
-            cv2.arrowedLine(image, (int(center[0]), int(center[1])), (int(gazeTop[0]), int(gazeTop[1])), gazeColor, thickness=2)
+            gaze_line_params.append(((int(center[0]), int(center[1])), (int(gazeTop[0]), int(gazeTop[1]))))
 
         # Show the video
         if displayFlag:
