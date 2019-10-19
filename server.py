@@ -113,7 +113,18 @@ def predict():
                 center_rate = yaw_distribution[CENTER] / num_total
                 right_rate  = yaw_distribution[RIGHT]  / num_total
                 print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
-                return render_template("index.html")
+
+                kwargs = {
+                    "predicted"  : True,
+                    "yaw_mean"   : yaw_mean, 
+                    "yaw_var"    : yaw_var, 
+                    "pich_mean"  : pich_mean, 
+                    "pich_var"   : pich_var, 
+                    "left_rate"  : left_rate, 
+                    "center_rate": center_rate, 
+                    "right_rate" : right_rate
+                }
+                return render_template("index.html", **kwargs)
 
             except Exception as e:
                 print(e)

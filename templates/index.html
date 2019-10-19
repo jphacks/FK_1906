@@ -43,7 +43,22 @@
         <video id="iframe1" controls autoplay muted loop></video><br>
         <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary">
       </form>
+      
 
+      <!-- ######################## RESULT BEGIN  ######################## -->
+      <p>
+        {% if predicted %}
+          yaw_mean: {{ yaw_mean }}<br>
+          yaw_var:  {{ yaw_var }}<br>
+
+          pich_mean:{{ pich_mean }}<br>
+          pich_var: {{ pich_var }}<br>
+          <br>
+          rate<br>
+          left:{{left_rate}}, center: {{center_rate}}, right: {{right_rate}}<br>
+        {% endif %}
+      </p>
+      <!-- ######################## RESULT END######################## -->
 
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
