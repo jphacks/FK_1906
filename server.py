@@ -25,6 +25,8 @@ from api import videoReader
 from sound import analyze_sound
 import matplotlib.pyplot as plt
 
+import moviepy.editor as mp
+
 app = Flask(__name__)
 
 # 画像のアップロード先のディレクトリ
@@ -71,7 +73,20 @@ def predict():
                 print("videonSouse", videoSource)
                 print("app",app.config['UPLOAD_FOLDER'])
                 sound_analize_result = analyze_sound(videoSource)
+
+                # Extract audio from input video.
+                clip_input = mp.VideoFileClip(videoSource).subclip()
+                clip_input.audio.write_audiofile('audio.mp3')
+
                 gaze_list = videoReader(videoSource)
+
+                editedVideoSource = os.path.join(app.config['UPLOAD_FOLDER'], "edited.mp4")
+
+                # Add audio to output video.
+                clip_output = mp.VideoFileClip(editedVideoSource).subclip()
+                clip_output.write_videofile(editedVideoSource, audio='audio.mp3')
+
+
                 yaw_list, pich_list = zip(*gaze_list)
                 yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
                 yaw_mean,  yaw_var  = np.mean(yaw_list),  np.var(yaw_list)
@@ -106,12 +121,12 @@ def predict():
 
                 kwargs = {
                     "predicted"  : True,
-                    "yaw_mean"   : yaw_mean, 
-                    "yaw_var"    : yaw_var, 
-                    "pich_mean"  : pich_mean, 
-                    "pich_var"   : pich_var, 
-                    "left_rate"  : left_rate, 
-                    "center_rate": center_rate, 
+                    "yaw_mean"   : yaw_mean,
+                    "yaw_var"    : yaw_var,
+                    "pich_mean"  : pich_mean,
+                    "pich_var"   : pich_var,
+                    "left_rate"  : left_rate,
+                    "center_rate": center_rate,
                     "right_rate" : right_rate,
                     "amp_mean"   : sound_analize_result["amplitudes"]["mean"],
                     "amp_var"    : sound_analize_result["amplitudes"]["var"],
