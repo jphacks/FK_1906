@@ -26,6 +26,7 @@ from api import videoReader
 
 
 app = Flask(__name__)
+now_loading = True
 
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
@@ -36,7 +37,6 @@ def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
     # OKなら１、だめなら0
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
@@ -61,7 +61,7 @@ def uploads_file():
     #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     #         # アップロード後のページに転送
     #         return redirect(url_for('uploaded_file', filename=filename))
-    return render_template('index.html')
+    return render_template('index.html', now_loading=now_loading)
 
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -124,7 +124,8 @@ def predict():
                     "center_rate": center_rate, 
                     "right_rate" : right_rate
                 }
-                return render_template("index.html", **kwargs)
+                now_loading = False 
+                return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
                 print(e)
@@ -141,8 +142,6 @@ def predict():
         print("get request")
 
     return render_template('index.html')
-
-
 
 
 @app.route('/uploads/<filename>')
