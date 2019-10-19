@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 
     <title>Presentation Scorer</title>
     <style type="text/css">
@@ -41,14 +42,18 @@
           <input type="text" class="form-control" readonly="">
         </div>
         <video id="iframe1" controls autoplay muted loop></video><br>
-        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary">
+        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary" >
       </form>
 
       <p style="color: {{color}};"> {{massege}} </p>
 
-      <!-- ######################## RESULT BEGIN  ######################## -->
+
+          <!-- ######################## RESULT BEGIN  ######################## -->
       <p>
-        {% if predicted %}
+        {% if now_loading %}
+        <div id="loading"></div>
+        
+        {% elif predicted %}
           yaw_mean: {{ yaw_mean }}<br>
           yaw_var:  {{ yaw_var }}<br>
 
@@ -78,6 +83,10 @@
         label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
         input.parent().parent().next(':text').val(label);
         });
+
+        $('#btn1').on('click', function (){
+        $('#loading').append('<div class="loading"></div>')
+        });
       </script>
       <script>
         $(function(){
@@ -93,7 +102,8 @@
           reader.readAsDataURL(file);
           });
         });
-      </script>
+       
+       </script>
     <h1>Web Audio APIによる音声の波形表示</h1>
     <h2>ControlPanel</h2>
     <div class="inner">

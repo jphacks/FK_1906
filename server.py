@@ -28,6 +28,7 @@ import matplotlib.pyplot as plt
 import moviepy.editor as mp
 
 app = Flask(__name__)
+now_loading = True
 
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
@@ -39,13 +40,10 @@ def allwed_file(filename):
     # OKなら１、だめなら0
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
-
-    return render_template('index.html')
-
+    return render_template('index.html', now_loading=now_loading)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -134,8 +132,9 @@ def predict():
                     "fle_var"    : sound_analize_result["fleurie"]["var"],
                     "plot_url"   : plot_b64data
                 }
-                print(kwargs)
-                return render_template("index.html", **kwargs)
+                
+                now_loading = False 
+                return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
                 print(e)
@@ -145,8 +144,6 @@ def predict():
         print("get request")
 
     return render_template('index.html')
-
-
 
 
 @app.route('/uploads/<filename>')
