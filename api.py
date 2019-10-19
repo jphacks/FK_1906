@@ -27,8 +27,8 @@ endPoint = 'http://a8b88762ef01211e9950f0eacce6e863-2021028779.ap-northeast-1.el
 proxies = []
 #proxies = ['http':'http://proxygate2.nic.nec.co.jp:8080', 'https':'http://proxygate2.nic.nec.co.jp:8080']
 
-displayFlag = True
-#  displayFlag = False
+# displayFlag = True
+displayFlag = False
 
 def is_looking_forward(gaze, yaw_min=-60, yaw_max=60, pich_min=-60, pich_max=20):
     yaw, pich = gaze[0], gaze[1]
@@ -155,6 +155,7 @@ def videoReader(videoSource):
                 print(is_looking_forward(gaze))
                 gaze_list.append(gaze)
 
+
             cv2.circle(image, (int(reye[0]), int(reye[1])), 15, eyesColor, thickness=2)
             cv2.circle(image, (int(leye[0]), int(leye[1])), 15, eyesColor, thickness=2)
             center = ((reye[0]+leye[0])/2, (reye[1]+leye[1])/2)
@@ -190,4 +191,3 @@ if __name__ == "__main__":
 
     # start video
     videoReader(videoSource)
-
