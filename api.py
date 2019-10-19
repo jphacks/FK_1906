@@ -129,7 +129,7 @@ def videoReader(videoSource):
             video.release()
             cv2.destroyAllWindows()
             writer.release()
-            return
+            return gaze_list
         frameNo = video.get(cv2.CAP_PROP_POS_FRAMES)
 
         # call API with frameRateAPI
