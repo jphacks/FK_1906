@@ -30,8 +30,9 @@
     </nav>
 
     <div class="container">
+      {% if not predicted %}
 
-      <form id="uploadForm"  action="/predict" method="POST"  enctype="multipart/form-data">
+      <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
         動画をアップロードしてください<br>
         <div class="input-group">
           <label class="input-group-btn">
@@ -47,6 +48,7 @@
 
       <p style="color: {{color}};"> {{massege}} </p>
 
+      {% endif %}
 
           <!-- ######################## RESULT BEGIN  ######################## -->
       <p>
