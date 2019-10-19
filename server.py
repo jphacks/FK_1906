@@ -29,7 +29,7 @@ app = Flask(__name__)
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
 # アップロードされる拡張子の制限
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif', 'mp4'])
+ALLOWED_EXTENSIONS = set(['mp4'])
 
 def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
@@ -40,26 +40,7 @@ def allwed_file(filename):
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
-    # # リクエストがポストかどうかの判別
-    # if request.method == 'POST':
-    #     # ファイルがなかった場合の処理
-    #     if 'file' not in request.files:
-    #         flash('ファイルがありません')
-    #         return redirect(request.url)
-    #     # データの取り出し
-    #     file = request.files['file']
-    #     # ファイル名がなかった時の処理
-    #     if file.filename == '':
-    #         flash('ファイルがありません')
-    #         return redirect(request.url)
-    #     # ファイルのチェック
-    #     if file and allwed_file(file.filename):
-    #         # 危険な文字を削除（サニタイズ処理）
-    #         filename = secure_filename(file.filename)
-    #         # ファイルの保存
-    #         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    #         # アップロード後のページに転送
-    #         return redirect(url_for('uploaded_file', filename=filename))
+
     return render_template('index.html')
 
 
@@ -77,8 +58,7 @@ def predict():
             root, ext = os.path.splitext(filename)
             ext = ext.lower()
 
-            gazouketori = set([".jpg", ".jpeg", ".jpe", ".jp2", ".png", ".webp", ".bmp", ".pbm", ".pgm", ".ppm",
-                               ".pxm", ".pnm",  ".sr",  ".ras", ".tiff", ".tif", ".exr", ".hdr", ".pic", ".dib", ".mp4"])
+            gazouketori = set([".mp4"])
             if ext not in gazouketori:
                 return render_template('index.html',massege = "対応してない拡張子です",color = "red")
             print("success")
@@ -139,13 +119,6 @@ def predict():
                 print(e)
                 return render_template('index.html',massege = "解析出来ませんでした",color = "red")
 
-            #  buf = io.BytesIO()
-            #  image = Image.open(img)
-            #  image.save(buf, 'png')
-            #  qr_b64str = base64.b64encode(buf.getvalue()).decode("utf-8")
-            #  qr_b64data = "data:image/png;base64,{}".format(qr_b64str)
-
-            #  return render_template('index.html', img=qr_b64data, pre1_img_url=pre1_img_url, pre1_detail=pre1_detail, pre1_pro=pre1_pro, pre2_img_url=pre2_img_url, pre2_detail=pre2_detail, pre2_pro=pre2_pro, pre3_img_url=pre3_img_url, pre3_detail=pre3_detail, pre3_pro=pre3_pro)
     else:
         print("get request")
 

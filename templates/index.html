@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>wash mark checker</title>
+    <title>Presentation Scorer</title>
     <style type="text/css">
       .imagePreview {
       width: 30%;
@@ -24,14 +24,14 @@
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
-        <a class="navbar-brand" href="/" style="font-size: 4vh;">wash mark checker</a>
+        <a class="navbar-brand" href="/" style="font-size: 4vh;">Presentation Scorer</a>
       </div>
     </nav>
 
     <div class="container">
 
       <form id="uploadForm"  action="/predict" method="POST"  enctype="multipart/form-data">
-        画像をアップロードしてください（1:1推奨）<br>
+        動画をアップロードしてください<br>
         <div class="input-group">
           <label class="input-group-btn">
             <span class="btn btn-primary">
@@ -44,6 +44,7 @@
         <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary">
       </form>
 
+      <p style="color: {{color}};"> {{massege}} </p>
 
       <!-- ######################## RESULT BEGIN  ######################## -->
       <p>
