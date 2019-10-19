@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>wash mark checker</title>
+    <style type="text/css">
+      .imagePreview {
+      width: 30%;
+      height: auto;
+      background-position: center center;
+      background-size: cover;
+      -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+      display: inline-block;
+      }
+    </style>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  </head>
+  <body style="background-color: #EEF9FF; color: #5B5B5B;">
+    <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
+      <div class="container">
+        <a class="navbar-brand" href="/" style="font-size: 4vh;">wash mark checker</a>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <form id="uploadForm"  action="/predict" method="POST"  enctype="multipart/form-data">
+        画像をアップロードしてください（1:1推奨）<br>
+        <div class="input-group">
+          <label class="input-group-btn">
+            <span class="btn btn-primary">
+              ファイル選択<input type="file" name="file" id="file" style="display:none">
+            </span>
+          </label>
+          <input type="text" class="form-control" readonly="">
+        </div>
+        <video id="iframe1" controls autoplay muted loop></video><br>
+        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary">
+      </form>
+
+
+      <!-- Optional JavaScript -->
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <script>
+        $(document).on('change', ':file', function() {
+        var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.parent().parent().next(':text').val(label);
+        });
+      </script>
+      <script>
+        $(function(){
+          $('#file').change(function(e){
+          var file = e.target.files[0];
+          var reader = new FileReader();
+          reader.onload = (function(file){
+            return function(e){
+              $("#iframe1").attr("src", e.target.result);
+              $("#iframe1").attr("title", file.name);
+            };
+          })(file);
+          reader.readAsDataURL(file);
+          });
+        });
+      </script>
+    <h1>Web Audio APIによる音声の波形表示</h1>
+    <h2>ControlPanel</h2>
+    <div class="inner">
+      <div id="control">
+        <button id="btn-play">play</button>
+        <button id="btn-stop">stop</button>
+        <input type="file" id="audio-input" value="">
+        <button id="btn-clear">clear</button>
+      </div>
+    </div>
+    <h2>波形表示</h2>
+    <div class="inner">
+      <canvas id="audio-visual" width="1280" height="700"></canvas>
+      <audio id="audio-player" loop></audio>
+    </div>
+
+    <script type="text/javascript" src="/static/js/effect.js"></script>
+
+  </body>
+</html>
