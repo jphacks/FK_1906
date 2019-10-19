@@ -22,8 +22,7 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
 from api import videoReader
-
-
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -114,15 +113,25 @@ def predict():
                 right_rate  = yaw_distribution[RIGHT]  / num_total
                 print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
 
+                img = io.BytesIO()
+                plt.hist(yaw_list, bins=100)
+                plt.savefig(img, format='png')
+                img.seek(0)
+
+                plot_b64str = base64.b64encode(img.getvalue()).decode("utf-8")
+                plot_b64data = "data:image/png;base64,{}".format(plot_b64str)
+
+
                 kwargs = {
                     "predicted"  : True,
-                    "yaw_mean"   : yaw_mean, 
-                    "yaw_var"    : yaw_var, 
-                    "pich_mean"  : pich_mean, 
-                    "pich_var"   : pich_var, 
-                    "left_rate"  : left_rate, 
-                    "center_rate": center_rate, 
-                    "right_rate" : right_rate
+                    "yaw_mean"   : yaw_mean,
+                    "yaw_var"    : yaw_var,
+                    "pich_mean"  : pich_mean,
+                    "pich_var"   : pich_var,
+                    "left_rate"  : left_rate,
+                    "center_rate": center_rate,
+                    "right_rate" : right_rate,
+                    "plot_url"   : plot_b64data
                 }
                 return render_template("index.html", **kwargs)
 
@@ -149,6 +158,18 @@ def predict():
 # ファイルを表示する
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.after_request
+def add_header(r):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
 
 if __name__ == '__main__':
     app.run()
