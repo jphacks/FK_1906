@@ -2,7 +2,7 @@ import os
 # request フォームから送信した情報を扱うためのモジュール
 # redirect  ページの移動
 # url_for アドレス遷移
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, render_template
 # ファイル名をチェックする関数
 from werkzeug.utils import secure_filename
 # 画像のダウンロード
@@ -13,7 +13,7 @@ app = Flask(__name__)
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
 # アップロードされる拡張子の制限
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif', 'mp4'])
 
 def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
@@ -44,25 +44,7 @@ def uploads_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # アップロード後のページに転送
             return redirect(url_for('uploaded_file', filename=filename))
-    return '''
-    <!doctype html>
-    <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>
-                ファイルをアップロードして判定しよう
-            </title>
-        </head>
-        <body>
-            <h1>
-                ファイルをアップロードして判定しよう
-            </h1>
-            <form method = post enctype = multipart/form-data>
-            <p><input type=file name = file>
-            <input type = submit value = Upload>
-            </form>
-        </body>
-'''
+    return render_template('index.html')
 
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
