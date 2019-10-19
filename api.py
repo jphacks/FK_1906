@@ -27,8 +27,8 @@ endPoint = 'http://a8b88762ef01211e9950f0eacce6e863-2021028779.ap-northeast-1.el
 proxies = []
 #proxies = ['http':'http://proxygate2.nic.nec.co.jp:8080', 'https':'http://proxygate2.nic.nec.co.jp:8080']
 
-displayFlag = True
-#  displayFlag = False
+# displayFlag = True
+displayFlag = False
 
 def is_looking_forward(gaze, yaw_min=-60, yaw_max=60, pich_min=-60, pich_max=20):
     yaw, pich = gaze[0], gaze[1]
@@ -105,8 +105,10 @@ def videoReader(videoSource):
     gazeColor = (0, 255, 0)
 
     # Create video writer
-    fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
-    writer = cv2.VideoWriter('gazeOutput.mp4', fourcc, fps, (int(width), int(height)))
+    #  fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+    writer = cv2.VideoWriter('uploads/edited.avi', fourcc, fps, (int(width), int(height)))
 
     gaze_duration = 0
     gaze_list = []
@@ -129,7 +131,7 @@ def videoReader(videoSource):
             video.release()
             cv2.destroyAllWindows()
             writer.release()
-            return
+            return gaze_list
         frameNo = video.get(cv2.CAP_PROP_POS_FRAMES)
 
         # call API with frameRateAPI
@@ -154,6 +156,7 @@ def videoReader(videoSource):
                 print("yaw: {}, pich: {}".format(*gaze))
                 print(is_looking_forward(gaze))
                 gaze_list.append(gaze)
+
 
             cv2.circle(image, (int(reye[0]), int(reye[1])), 15, eyesColor, thickness=2)
             cv2.circle(image, (int(leye[0]), int(leye[1])), 15, eyesColor, thickness=2)
@@ -190,4 +193,3 @@ if __name__ == "__main__":
 
     # start video
     videoReader(videoSource)
-
