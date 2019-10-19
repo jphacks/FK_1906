@@ -105,8 +105,10 @@ def videoReader(videoSource):
     gazeColor = (0, 255, 0)
 
     # Create video writer
-    fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
-    writer = cv2.VideoWriter('gazeOutput.mp4', fourcc, fps, (int(width), int(height)))
+    #  fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+    writer = cv2.VideoWriter('uploads/edited.avi', fourcc, fps, (int(width), int(height)))
 
     gaze_duration = 0
     gaze_list = []
