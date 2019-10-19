@@ -121,8 +121,8 @@ def predict():
                         res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=5)
                     except:
                         print('Error! Can not connect to the API.')
-                        return []
-                        # sys.exit(1)
+                        #return []
+                        sys.exit(1)
 
                     # Get response
                     if res.status_code == 200:
@@ -175,9 +175,7 @@ def predict():
                         frameNo = video.get(cv2.CAP_PROP_POS_FRAMES)
 
                         # call API with frameRateAPI
-                        results = []
-                        while not results:
-                            results = sendRequest(image, width, height)
+                        results = sendRequest(image, width, height)
 
                         #######################################################################
                         # Edit for your application
