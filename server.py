@@ -116,6 +116,7 @@ def predict():
                 plot_b64str = base64.b64encode(img.getvalue()).decode("utf-8")
                 plot_b64data = "data:image/png;base64,{}".format(plot_b64str)
 
+                plt.clf()
 
                 kwargs = {
                     "predicted"  : True,
@@ -132,8 +133,8 @@ def predict():
                     "fle_var"    : sound_analize_result["fleurie"]["var"],
                     "plot_url"   : plot_b64data
                 }
-                
-                now_loading = False 
+
+                now_loading = False
                 return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
