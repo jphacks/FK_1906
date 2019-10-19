@@ -106,7 +106,7 @@ def videoReader(videoSource):
 
     # Create video writer
     fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
-    writer = cv2.VideoWriter('gazeOutput.mp4', fourcc, fps, (int(width), int(height)))
+    writer = cv2.VideoWriter('uploads/edited.mp4', fourcc, fps, (int(width), int(height)))
 
     gaze_duration = 0
     gaze_list = []
