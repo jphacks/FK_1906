@@ -122,6 +122,7 @@ def predict():
 
                 score = calc_score(yaw_mean, yaw_var, pich_mean, 
                         sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"])
+                plt.clf()
 
                 kwargs = {
                     "predicted"  : True,
@@ -139,8 +140,8 @@ def predict():
                     "plot_url"   : plot_b64data,
                     "score": score
                 }
-                
-                now_loading = False 
+
+                now_loading = False
                 return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
