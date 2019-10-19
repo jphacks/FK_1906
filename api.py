@@ -173,7 +173,7 @@ def videoReader(videoSource):
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 video.release()
                 cv2.destroyAllWindows()
-                return
+                return gaze_list
         else:
             if len(results) > 0:
                 print('    ', gaze)
