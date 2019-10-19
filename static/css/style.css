@@ -18,3 +18,7 @@
    opacity: .3;
  }
 }
+
+video {
+    width: 100%;
+}

@@ -21,6 +21,14 @@
       }
     </style>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+     function show() {
+         var target_video = document.getElementById("iframe1")
+         var target_button = document.getElementById("btn1")
+         target_button.style.display = "inline"
+         target_video.style.display = "inline"
+     }
+    </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
@@ -31,18 +39,18 @@
 
     <div class="container">
 
-      <form id="uploadForm"  action="/predict" method="POST"  enctype="multipart/form-data">
-        動画をアップロードしてください<br>
+      <form id="uploadForm"  action="/predict" method="POST"  enctype="multipart/form-data"><br>
+        <h3>動画をアップロードしてください</h3>
         <div class="input-group">
           <label class="input-group-btn">
             <span class="btn btn-primary">
-              ファイル選択<input type="file" name="file" id="file" style="display:none">
+              ファイル選択<input type="file" name="file" id="file" style="display:none" onchange="show()">
             </span>
           </label>
           <input type="text" class="form-control" readonly="">
         </div>
-        <video id="iframe1" controls autoplay muted loop></video><br>
-        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary" >
+        <video id="iframe1" controls autoplay muted loop style="display:none"></video><br>
+        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-danger" style="display:none">
       </form>
 
       <p style="color: {{color}};"> {{massege}} </p>
