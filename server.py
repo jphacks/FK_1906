@@ -90,7 +90,7 @@ def predict():
                 file.save(videoSource)
                 print("videonSouse", videoSource)
                 print("app",app.config['UPLOAD_FOLDER'])
-                sound_analize_result = sound_data(videoSource)
+                sound_analize_result = analyze_sound(videoSource)
                 gaze_list = videoReader(videoSource)
                 yaw_list, pich_list = zip(*gaze_list)
                 yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
@@ -123,8 +123,13 @@ def predict():
                     "pich_var"   : pich_var, 
                     "left_rate"  : left_rate, 
                     "center_rate": center_rate, 
-                    "right_rate" : right_rate
+                    "right_rate" : right_rate,
+                    "amp_mean"   : sound_analize_result["amplitudes"]["mean"],
+                    "amp_var"    : sound_analize_result["amplitudes"]["var"],
+                    "fle_mean"   : sound_analize_result["fleurie"]["mean"],
+                    "fle_var"    : sound_analize_result["fleurie"]["var"],
                 }
+                print(kwargs)
                 return render_template("index.html", **kwargs)
 
             except Exception as e:

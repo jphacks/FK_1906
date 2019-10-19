@@ -7,7 +7,6 @@ from scipy.fftpack import fft, fftfreq
 
 def analyze_sound(video_source, display=False):
     sound = AudioSegment.from_file(video_source, format="mp4")
-    print(sound)
     sound_data = np.array(sound.get_array_of_samples())
     sound_data = sound_data[10:-10]
     amplitudes = np.abs(sound_data)
