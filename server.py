@@ -22,7 +22,7 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 
 from api import videoReader
-
+from sound import analyze_sound
 
 
 app = Flask(__name__)
@@ -90,6 +90,7 @@ def predict():
                 file.save(videoSource)
                 print("videonSouse", videoSource)
                 print("app",app.config['UPLOAD_FOLDER'])
+                sound_analize_result = sound_data(videoSource)
                 gaze_list = videoReader(videoSource)
                 yaw_list, pich_list = zip(*gaze_list)
                 yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
