@@ -116,14 +116,16 @@ def videoReader(videoSource):
     #  for i in range(100):
         start_time = time.time()
 
+        success, image = video.read()
+
         # Read a frame
-        if i % int(fps/2) == 0:
-            success, image = video.read()
-        else:
+        if i % int(fps/2) != 0:
+            writer.write(image)
             continue
 
         stTime = time.time()
         while not success:
+            print("Not success")
             video.release()
             cv2.destroyAllWindows()
             writer.release()
@@ -195,6 +197,7 @@ def videoReader(videoSource):
     center_rate = yaw_distribution[CENTER] / num_total
     right_rate  = yaw_distribution[RIGHT]  / num_total
     print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
+    video.release()
 
 ### Main ######################################################################
 if __name__ == "__main__":
