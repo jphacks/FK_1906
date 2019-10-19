@@ -76,7 +76,7 @@ def sendRequest(image, width, height):
     else:
         print('## Error! ##')
         print(res.text)
-        return []
+        return [[],[]]
 
 ###############################################################################
 def videoReader(videoSource):
