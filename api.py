@@ -119,7 +119,7 @@ def videoReader(videoSource):
 
         stTime = time.time()
         while not success:
-            print("Not success")
+            print("Cannot grab image.")
             video.release()
             cv2.destroyAllWindows()
             writer.release()
@@ -163,7 +163,6 @@ def videoReader(videoSource):
             if len(results) > 0:
                 print('    ', gaze)
 
-        print(gaze_duration)
         writer.write(image)
 
     video.release()
