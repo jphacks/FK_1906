@@ -35,7 +35,7 @@
     <div id="all">
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
-        <a class="navbar-brand" href="/" style="font-size: 4vh;">Presentation Scorer</a>
+        <a class="navbar-brand" href="/" style="font-size: 4vh;">プレゼンテーションチェッカー</a>
       </div>
     </nav>
 
@@ -66,7 +66,7 @@
 
         {% elif predicted %}
         <script>
-          
+
           $('#loading').attr("class", "");
           $('#all').attr("class", "");
         </script>
@@ -80,16 +80,16 @@
         <span>全体を見ているか <h3>{{yaw_var_score*5}} / 20</h3></span>
         <span>声の強弱 <h3>{{amp_var_score*5}} / 20</h3></span>
         <span>声のトーン <h3>{{fle_var_score*5}} / 20</h3></span>
-        
-        
+
+
         <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
         <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
-        
-        <h2>波形表示</h2>
+
+        <!-- <h2>波形表示</h2>
         <div class="inner">
           <canvas id="audio-visual" width="1280" height="700"></canvas>
           <audio id="audio-player" loop></audio>
-        </div>
+        </div> -->
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->
