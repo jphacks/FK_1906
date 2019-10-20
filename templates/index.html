@@ -51,7 +51,7 @@
           <input type="text" class="form-control" readonly="">
         </div>
         <video id="iframe1" controls autoplay muted loop style="display:none"></video><br>
-        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-danger" style="display:none">
+        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-success" style="display:none">
       </form>
 
       <p style="color: {{color}};"> {{massege}} </p>
@@ -64,6 +64,7 @@
         <div id="loading"></div>
 
         {% elif predicted %}
+          <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
           yaw_mean: {{ yaw_mean }}<br>
           yaw_var:  {{ yaw_var }}<br>
 
