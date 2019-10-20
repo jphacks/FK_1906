@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 
-    <title>Presentation Scorer</title>
+    <title>プレゼンテーションチェッカー</title>
     <style type="text/css">
       .imagePreview {
       width: 30%;
@@ -70,21 +70,26 @@
           $('#loading').attr("class", "");
           $('#all').attr("class", "");
         </script>
-        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
-          yaw_mean: {{ yaw_mean }}<br>
-          yaw_var:  {{ yaw_var }}<br>
-
-          pich_mean:{{ pich_mean }}<br>
-          pich_var: {{ pich_var }}<br>
-          <br>
-          rate<br>
-          left:{{left_rate}}, center: {{center_rate}}, right: {{right_rate}}<br>
-          sound<br>
-          amp_mean: {{amp_mean}}, amp_var: {{amp_var}}, <br>
-          fle_mean: {{fle_mean}}, fle_var: {{fle_var}}<br>
-          score: <h2>{{score}}</h2>
-          <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
-          <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
+        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
+        <span>スコア <h3>{{gaze_score+intonation_score}} / 100</h3></span>
+        <span>視線 <h3>{{gaze_score}} / 60</h3></span>
+        <span>声 <h3>{{intonation_score}} / 40</h3></span>
+        <hr>
+        <span>下を向かずに話せているか <h3>{{pich_mean_score*5}} / 20</h3></span>
+        <span>目線がかたよっていないか <h3>{{yaw_mean_score*5}} / 20</h3></span>
+        <span>全体を見ているか <h3>{{yaw_var_score*5}} / 20</h3></span>
+        <span>声の強弱 <h3>{{amp_var_score*5}} / 20</h3></span>
+        <span>声のトーン <h3>{{fle_var_score*5}} / 20</h3></span>
+        
+        
+        <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
+        <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
+        
+        <h2>波形表示</h2>
+        <div class="inner">
+          <canvas id="audio-visual" width="1280" height="700"></canvas>
+          <audio id="audio-player" loop></audio>
+        </div>
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->
@@ -121,14 +126,7 @@
           reader.readAsDataURL(file);
           });
         });
-
        </script>
-    <h2>波形表示</h2>
-    <div class="inner">
-      <canvas id="audio-visual" width="1280" height="700"></canvas>
-      <audio id="audio-player" loop></audio>
-    </div>
-
     <script type="text/javascript" src="/static/js/effect.js"></script>
     </div>
   </body>

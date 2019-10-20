@@ -108,7 +108,7 @@ def uploads_file():
                 print("left: {}, center: {}, right: {}".format(left_rate, center_rate, right_rate))
 
                 img = io.BytesIO()
-                plt.hist(yaw_list, bins=100)
+                plt.hist(yaw_list, bins=50)
                 plt.savefig(img, format='png')
                 img.seek(0)
 
