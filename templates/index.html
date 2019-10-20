@@ -71,6 +71,8 @@
           $('#all').attr("class", "");
         </script>
         <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
+        <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
+        <br><br>
         <span>スコア <h3>{{gaze_score+intonation_score}} / 100</h3></span>
         <span>視線 <h3>{{gaze_score}} / 60</h3></span>
         <span>声 <h3>{{intonation_score}} / 40</h3></span>
@@ -83,7 +85,6 @@
         
         
         <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
-        <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
         
         <h2>波形表示</h2>
         <div class="inner">
