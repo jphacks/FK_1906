@@ -126,6 +126,7 @@ def uploads_file():
 
                 score = calc_score(yaw_mean, yaw_var, pich_mean, 
                         sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"])
+
                 plt.clf()
 
                 kwargs = {

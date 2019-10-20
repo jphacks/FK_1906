@@ -21,8 +21,18 @@
       }
     </style>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+     function show() {
+         var target_video = document.getElementById("iframe1")
+         var target_button = document.getElementById("btn1")
+         target_button.style.display = "inline"
+         target_video.style.display = "inline"
+     }
+    </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
+    <div id="loading"></div>
+    <div id="all">
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
         <a class="navbar-brand" href="/" style="font-size: 4vh;">Presentation Scorer</a>
@@ -33,17 +43,17 @@
       {% if not predicted %}
 
       <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
-        動画をアップロードしてください<br>
+        <h3>動画をアップロードしてください</h3>
         <div class="input-group">
           <label class="input-group-btn">
             <span class="btn btn-primary">
-              ファイル選択<input type="file" name="file" id="file" style="display:none">
+              ファイル選択<input type="file" name="file" id="file" style="display:none" onchange="show()">
             </span>
           </label>
           <input type="text" class="form-control" readonly="">
         </div>
-        <video id="iframe1" controls autoplay muted loop></video><br>
-        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-primary" >
+        <video id="iframe1" controls autoplay muted loop style="display:none"></video><br>
+        <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-success" style="display:none">
       </form>
 
       <p style="color: {{color}};"> {{massege}} </p>
@@ -53,9 +63,14 @@
           <!-- ######################## RESULT BEGIN  ######################## -->
       <p>
         {% if now_loading %}
-        <div id="loading"></div>
-        
+
         {% elif predicted %}
+        <script>
+          
+          $('#loading').attr("class", "");
+          $('#all').attr("class", "");
+        </script>
+        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
           yaw_mean: {{ yaw_mean }}<br>
           yaw_var:  {{ yaw_var }}<br>
 
@@ -88,7 +103,8 @@
         });
 
         $('#btn1').on('click', function (){
-        $('#loading').append('<div class="loading"></div>')
+            $('#loading').attr("class", "loading");
+            $('#all').attr("class", "transparent")
         });
       </script>
       <script>
@@ -105,18 +121,8 @@
           reader.readAsDataURL(file);
           });
         });
-       
+
        </script>
-    <h1>Web Audio APIによる音声の波形表示</h1>
-    <h2>ControlPanel</h2>
-    <div class="inner">
-      <div id="control">
-        <button id="btn-play">play</button>
-        <button id="btn-stop">stop</button>
-        <input type="file" id="audio-input" value="">
-        <button id="btn-clear">clear</button>
-      </div>
-    </div>
     <h2>波形表示</h2>
     <div class="inner">
       <canvas id="audio-visual" width="1280" height="700"></canvas>
@@ -124,6 +130,6 @@
     </div>
 
     <script type="text/javascript" src="/static/js/effect.js"></script>
-
+    </div>
   </body>
 </html>

@@ -3,7 +3,7 @@
 
     var actx = new AudioContext();
     var $audioPlayer = document.getElementById('audio-player');
-    var $audioInput = document.getElementById('audio-input');
+    var $audioInput = document.getElementById('file');
     var $audioPlay = document.getElementById('btn-play');
     var $audioStop = document.getElementById('btn-stop');
     var $audioClear = document.getElementById('btn-clear');
