@@ -114,13 +114,9 @@ def uploads_file():
 
                 plot_b64str = base64.b64encode(img.getvalue()).decode("utf-8")
                 plot_b64data = "data:image/png;base64,{}".format(plot_b64str)
-                
-
-                score = calc_score(yaw_mean, yaw_var, pich_mean, 
-                        sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"])
-
                 plt.clf()
 
+                amp_var, fle_var = sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"]
                 yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
                 yaw_var_score   = digitize_score(yaw_var,   30,  10)
                 pich_mean_score = digitize_score(pich_mean, 20,  10)
@@ -147,11 +143,10 @@ def uploads_file():
                     "yaw_var_score": yaw_var_score,
                     "pich_mean_score": pich_mean_score,
                     "amp_var_score": amp_var_score,
-                    "fle_var_score" fle_var_score,
+                    "fle_var_score": fle_var_score,
                     "gaze_score" : gaze_score,
                     "intonation_score": intonation_score,
-                    "plot_url"   : plot_b64data,
-                    "score": score
+                    "plot_url"   : plot_b64data
                 }
 
                 now_loading = False
