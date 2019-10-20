@@ -35,17 +35,9 @@ UPLOAD_FOLDER = './uploads'
 # アップロードされる拡張子の制限
 ALLOWED_EXTENSIONS = set(['mp4'])
 
-def calc_score(yaw_mean, yaw_var, pich_mean, amp_var, fle_var):
-    def digitize_score(target, begin, end, digits=5):
-        return np.digitize(target, bins=np.linspace(begin, end, digits+1)[1:-1])
+def digitize_score(target, begin, end, digits=5):
+    return np.digitize(target, bins=np.linspace(begin, end, digits+1)[1:-1])
 
-    yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
-    yaw_var_score   = digitize_score(yaw_var,   30,  10)
-    pich_mean_score = digitize_score(pich_mean, 20,  10)
-    amp_var_score   = digitize_score(amp_var,   5,   10)
-    fle_var_score   = digitize_score(fle_var,   10,  20)
-    print("scores: ", (yaw_mean_score, yaw_var_score, pich_mean_score, amp_var_score, fle_var_score))
-    return sum((yaw_mean_score, yaw_var_score, pich_mean_score, amp_var_score, fle_var_score)) * 5
 
 def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
@@ -129,6 +121,15 @@ def uploads_file():
 
                 plt.clf()
 
+                yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
+                yaw_var_score   = digitize_score(yaw_var,   30,  10)
+                pich_mean_score = digitize_score(pich_mean, 20,  10)
+                amp_var_score   = digitize_score(amp_var,   5,   10)
+                fle_var_score   = digitize_score(fle_var,   10,  20)
+
+                gaze_score = sum((yaw_mean_score, yaw_var_score, pich_mean_score)) * 5
+                intonation_score = sum((amp_var_score, fle_var_score) * 5)
+
                 kwargs = {
                     "predicted"  : True,
                     "yaw_mean"   : yaw_mean,
@@ -142,6 +143,13 @@ def uploads_file():
                     "amp_var"    : sound_analize_result["amplitudes"]["var"],
                     "fle_mean"   : sound_analize_result["fleurie"]["mean"],
                     "fle_var"    : sound_analize_result["fleurie"]["var"],
+                    "yaw_mean_score": yaw_mean_score,
+                    "yaw_var_score": yaw_var_score,
+                    "pich_mean_score": pich_mean_score,
+                    "amp_var_score": amp_var_score,
+                    "fle_var_score" fle_var_score,
+                    "gaze_score" : gaze_score,
+                    "intonation_score": intonation_score,
                     "plot_url"   : plot_b64data,
                     "score": score
                 }
