@@ -8,7 +8,7 @@ from scipy.fftpack import fft, fftfreq
 def analyze_sound(video_source, display=False):
     sound = AudioSegment.from_file(video_source, format="mp4")
     sound_data = np.array(sound.get_array_of_samples())
-    sound_data = sound_data[10:-10]
+    sound_data = sound_data[10:-10] / 100
     amplitudes = np.abs(sound_data)
     
 
@@ -26,7 +26,7 @@ def analyze_sound(video_source, display=False):
 
     
     F = np.fft.fft(f_data)
-    Amp = np.abs(F) / 10e7 /2
+    Amp = np.abs(F) / 10e5 /2
     fleurie_mean = np.mean(Amp)
     fleurie_var = np.var(Amp)
     print("fleurie_mean: ", fleurie_mean)

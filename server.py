@@ -36,7 +36,16 @@ UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = set(['mp4'])
 
 def calc_score(yaw_mean, yaw_var, pich_mean, amp_var, fle_var):
-    return yaw_mean*20 - abs(yaw_var) / 20 - pich_mean*2 + amp_var/2000 + fle_var*5
+    def digitize_score(target, begin, end, digits=5):
+        return np.digitize(target, bins=np.linspace(begin, end, digits+1)[1:-1])
+
+    yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
+    yaw_var_score   = digitize_score(yaw_var,   30,  10)
+    pich_mean_score = digitize_score(pich_mean, 20,  10)
+    amp_var_score   = digitize_score(amp_var,   5,   10)
+    fle_var_score   = digitize_score(fle_var,   10,  20)
+    print("scores: ", (yaw_mean_score, yaw_var_score, pich_mean_score, amp_var_score, fle_var_score))
+    return sum((yaw_mean_score, yaw_var_score, pich_mean_score, amp_var_score, fle_var_score)) * 5
 
 def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
