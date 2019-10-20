@@ -31,6 +31,8 @@
     </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
+    <div id="loading"></div>
+    <div id="all">
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
         <a class="navbar-brand" href="/" style="font-size: 4vh;">Presentation Scorer</a>
@@ -41,7 +43,7 @@
       {% if not predicted %}
 
       <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
-        動画をアップロードしてください<br>
+        <h3>動画をアップロードしてください</h3>
         <div class="input-group">
           <label class="input-group-btn">
             <span class="btn btn-primary">
@@ -61,10 +63,14 @@
           <!-- ######################## RESULT BEGIN  ######################## -->
       <p>
         {% if now_loading %}
-        <div id="loading"></div>
 
         {% elif predicted %}
-          <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
+        <script>
+          
+          $('#loading').attr("class", "");
+          $('#all').attr("class", "");
+        </script>
+        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
           yaw_mean: {{ yaw_mean }}<br>
           yaw_var:  {{ yaw_var }}<br>
 
@@ -96,7 +102,8 @@
         });
 
         $('#btn1').on('click', function (){
-        $('#loading').append('<div class="loading"></div>')
+            $('#loading').attr("class", "loading");
+            $('#all').attr("class", "transparent")
         });
       </script>
       <script>
@@ -122,6 +129,6 @@
     </div>
 
     <script type="text/javascript" src="/static/js/effect.js"></script>
-
+    </div>
   </body>
 </html>
