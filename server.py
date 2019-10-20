@@ -12,13 +12,8 @@ import numpy as np
 
 import os
 import io
-# request フォームから送信した情報を扱うためのモジュール
-# redirect  ページの移動
-# url_for アドレス遷移
 from flask import Flask, request, redirect, url_for, render_template
-# ファイル名をチェックする関数
 from werkzeug.utils import secure_filename
-# 画像のダウンロード
 from flask import send_from_directory
 
 from api import videoReader
@@ -30,9 +25,7 @@ import moviepy.editor as mp
 app = Flask(__name__)
 
 
-# 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
-# アップロードされる拡張子の制限
 ALLOWED_EXTENSIONS = set(['mp4'])
 
 def digitize_score(target, begin, end, digits=5):
@@ -40,11 +33,9 @@ def digitize_score(target, begin, end, digits=5):
 
 
 def allwed_file(filename):
-    # .があるかどうかのチェックと、拡張子の確認
-    # OKなら１、だめなら0
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# ファイルを受け取る方法の指定
+
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
     now_loading = True
@@ -60,10 +51,9 @@ def uploads_file():
 
             gazouketori = set([".mp4"])
             if ext not in gazouketori:
-                return render_template('index.html',massege = "対応してない拡張子です",color = "red")
+                return render_template('index.html',massege = "unsupported extension detected.",color = "red")
             print("success")
             try:
-                ### Main ######################################################################
                 file = request.files['file']
                 videoSource = os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
                 file.save(videoSource)
@@ -154,7 +144,7 @@ def uploads_file():
 
             except Exception as e:
                 print(e)
-                return render_template('index.html',massege = "解析出来ませんでした",color = "red")
+                return render_template('index.html',massege = "Failure analitics",color = "red")
 
     else:
         print("get request")

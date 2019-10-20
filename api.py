@@ -20,21 +20,14 @@ import queue
 
 import numpy as np
 
-## Settings ###################################################################
+# Settings
 
 endPoint = 'http://a8b88762ef01211e9950f0eacce6e863-2021028779.ap-northeast-1.elb.amazonaws.com'       # for JPHACKS 2019
-
 proxies = []
 #proxies = ['http':'http://proxygate2.nic.nec.co.jp:8080', 'https':'http://proxygate2.nic.nec.co.jp:8080']
 
-# displayFlag = True
 displayFlag = False
 
-def is_looking_forward(gaze, yaw_min=-60, yaw_max=60, pich_min=-60, pich_max=20):
-    yaw, pich = gaze[0], gaze[1]
-    return yaw_min < yaw < yaw_max and pich_min < pich < pich_max
-
-###############################################################################
 # Send Request
 def sendRequest(image, width, height):
     global resultQueue
@@ -63,15 +56,12 @@ def sendRequest(image, width, height):
     data = json.dumps(reqPara).encode('utf-8')
     try:
         res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=5)
-    except:
-        print('Error! Can not connect to the API.')
+    except Exception as e:
+        print('Error! Can not connect to the API.', e)
         return ["NONE"]
-        #  sys.exit(1)
 
     # Get response
     if res.status_code == 200:
-        # print(json.dumps(res.json(), indent=4))
-        #resultQueue.put(res.json())
         return res.json()
     else:
         print('## Error! ##')
@@ -107,7 +97,6 @@ def videoReader(videoSource):
     gaze_line_params = []
 
     # Create video writer
-    #  fourcc = cv2.VideoWriter_fourcc('M', 'P', '4', 'V')
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
 
     writer = cv2.VideoWriter('uploads/edited.avi', fourcc, fps, (int(width), int(height)))
@@ -117,11 +106,10 @@ def videoReader(videoSource):
 
     # Read the Video Stream
     for i in range(num_frames):
-    #  for i in range(100):
         start_time = time.time()
 
         success, image = video.read()
-        for j, line_param in enumerate(gaze_line_params[:-1]):
+        for j, line_param in enumerate(gaze_line_params):
             cv2.arrowedLine(image, *line_param, gaze_colors[j % line_color_pattern], thickness=2)
 
         # Read a frame
@@ -148,19 +136,13 @@ def videoReader(videoSource):
 
         gaze_duration += time.time() - start_time
 
-        #######################################################################
-        # Edit for your application
-        #######################################################################
         for result in results:
             reye = result['reye']
             leye = result['leye']
             gaze = result['gaze']
-
             if not gaze is None:
                 print("yaw: {}, pich: {}".format(*gaze))
-                print(is_looking_forward(gaze))
                 gaze_list.append(gaze)
-
 
             cv2.circle(image, (int(reye[0]), int(reye[1])), 15, eyesColor, thickness=2)
             cv2.circle(image, (int(leye[0]), int(leye[1])), 15, eyesColor, thickness=2)

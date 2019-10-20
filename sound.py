@@ -10,8 +10,6 @@ def analyze_sound(video_source, display=False):
     sound_data = np.array(sound.get_array_of_samples())
     sound_data = sound_data[10:-10] / 100
     amplitudes = np.abs(sound_data)
-    
-
     amplitudes_mean = np.mean(amplitudes)
     amplitudes_var  = np.var(amplitudes)
     print("amplitudes_mean: ", amplitudes_mean)
@@ -23,8 +21,6 @@ def analyze_sound(video_source, display=False):
     t = np.arange(0, num_samples*dt, dt)
     f_data = fft(sound_data)
     freq = np.linspace(0, fps, num_samples)
-
-    
     F = np.fft.fft(f_data)
     Amp = np.abs(F) / 10e5 /2
     fleurie_mean = np.mean(Amp)
