@@ -62,7 +62,7 @@ def sendRequest(image, width, height):
     headers = {'Content-Type' : 'application/json'}
     data = json.dumps(reqPara).encode('utf-8')
     try:
-        res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=5)
+        res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=10)
     except:
         print('Error! Can not connect to the API.')
         return ["NONE"]
@@ -144,7 +144,7 @@ def videoReader(videoSource):
             print("count: {}/{}".format(i, num_frames))
             print("Connecting...")
             results = sendRequest(image, width, height)
-            time.sleep(3)
+            time.sleep(0.1)
 
         gaze_duration += time.time() - start_time
 
