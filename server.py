@@ -116,7 +116,9 @@ def uploads_file():
                 plot_b64data = "data:image/png;base64,{}".format(plot_b64str)
                 plt.clf()
 
-                amp_var, fle_var = sound_analize_result["amplitudes"]["var"], sound_analize_result["fleurie"]["var"]
+                amp_mean = sound_analize_result["volume_mean"]
+                amp_var = sound_analize_result["volume_var"]
+                fle_var = sound_analize_result["tone_var"]
                 yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
                 yaw_var_score   = digitize_score(yaw_var,   30,  10)
                 pich_mean_score = digitize_score(pich_mean, 20,  10)
@@ -135,10 +137,9 @@ def uploads_file():
                     "left_rate"  : left_rate,
                     "center_rate": center_rate,
                     "right_rate" : right_rate,
-                    "amp_mean"   : sound_analize_result["amplitudes"]["mean"],
-                    "amp_var"    : sound_analize_result["amplitudes"]["var"],
-                    "fle_mean"   : sound_analize_result["fleurie"]["mean"],
-                    "fle_var"    : sound_analize_result["fleurie"]["var"],
+                    "amp_mean"   : amp_mean,
+                    "amp_var"    : amp_var,
+                    "fle_var"    : fle_var,
                     "yaw_mean_score": yaw_mean_score,
                     "yaw_var_score": yaw_var_score,
                     "pich_mean_score": pich_mean_score,
