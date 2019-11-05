@@ -1,4 +1,6 @@
 **/venv
 __pycache__
 **/uploads
+results/*
 audio.mp3
+!.gitkeep
