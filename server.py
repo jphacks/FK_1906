@@ -150,6 +150,7 @@ def uploads_file():
                 }
 
                 now_loading = False
+                write_analysis_result(filename, kwargs)
                 return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
@@ -164,7 +165,7 @@ def write_analysis_result(filepath, results):
     filename = os.path.basename(filepath)
     with open(os.path.join("./results", filename+".txt"), mode='w') as f:
         for key, value in results.items():
-            result_str = "{}:{}".format(key, value)
+            result_str = "{}:{}\n".format(key, value)
             f.write(result_str)
 
 
