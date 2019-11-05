@@ -153,7 +153,6 @@ def uploads_file():
                     "yaw_var"    : yaw_var,   # 目線の左右の分散
                     "pich_mean"  : pich_mean, # 目線の高さの平均
                     "volume_mean": amp_mean,  # 声の大小の平均
-                    "volume_var" : amp_var,   # 声の大小の分散
                     "tone_var"   : fle_var    # 声のトーンの分散
                 }
 
