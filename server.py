@@ -15,7 +15,7 @@ import io
 # request フォームから送信した情報を扱うためのモジュール
 # redirect  ページの移動
 # url_for アドレス遷移
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template, jsonify
 # ファイル名をチェックする関数
 from werkzeug.utils import secure_filename
 # 画像のダウンロード
@@ -27,6 +27,8 @@ import matplotlib.pyplot as plt
 
 import moviepy.editor as mp
 
+from models.models import Progress
+from models.database import db_session
 app = Flask(__name__)
 
 
@@ -181,6 +183,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route("/progress",methods=["post"])
+def progress():
+
+    progress = Progress.query.first()
+    return jsonify({'frames' : progress.movie_frames, 'progress' : progress.movie_progress})
 
 @app.after_request
 def add_header(r):

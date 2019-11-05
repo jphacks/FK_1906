@@ -20,6 +20,8 @@ import queue
 
 import numpy as np
 
+from models.models import Progress
+from models.database import db_session
 ## Settings ###################################################################
 
 endPoint = 'http://a8b88762ef01211e9950f0eacce6e863-2021028779.ap-northeast-1.elb.amazonaws.com'       # for JPHACKS 2019
@@ -143,6 +145,16 @@ def videoReader(videoSource):
         while results == ["NONE"]:
             print("count: {}/{}".format(i, num_frames))
             print("Connecting...")
+
+            progress = Progress.query.first()
+            if progress is None:
+                progress = Progress(movie_frames=num_frames, movie_progress=i)
+            else :
+                progress.movie_frames = num_frames
+                progress.movie_progress = i
+
+            db_session.add(progress)
+            db_session.commit()
             results = sendRequest(image, width, height)
             time.sleep(0.1)
 
