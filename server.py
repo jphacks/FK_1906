@@ -149,9 +149,16 @@ def uploads_file():
                     "intonation_score": intonation_score,
                     "plot_url"   : plot_b64data
                 }
+                params_for_train = {
+                    "yaw_var"    : yaw_var,   # 目線の左右の分散
+                    "pich_mean"  : pich_mean, # 目線の高さの平均
+                    "volume_mean": amp_mean,  # 声の大小の平均
+                    "volume_var" : amp_var,   # 声の大小の分散
+                    "tone_var"   : fle_var    # 声のトーンの分散
+                }
 
                 now_loading = False
-                write_analysis_result(filename, kwargs)
+                write_analysis_result(filename, params_for_train)
                 return render_template("index.html", now_loading=now_loading, **kwargs)
 
             except Exception as e:
