@@ -73,14 +73,14 @@
         <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
         <div class="score">{{gaze_score+intonation_score}}</div>
         <br><br><br><br><br><br>
-        <div class="box" width="80%">
+        <div class="box">
           <div class="center">視線</div>
           <span style="font-size:40px">下を向かずに話せているか</span>
           <span class="right">{{pich_mean_score*5}} / 30</span><hr>
           <span style="font-size:40px">全体を見ているか</span>
           <span class="right">{{yaw_var_score*5}} / 20</span><br>
         </div>
-        <div class="box" width="80%">
+        <div class="box">
           <div class="center">声</div>
           <span style="font-size:40px">声の大きさ</span>
           <span class="right">{{amp_var_score*5}} / 30</span><hr>
@@ -89,7 +89,6 @@
         </div>
         <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
         <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
-        </div>
         <!-- <h2>波形表示</h2>
         <div class="inner">
           <canvas id="audio-visual" width="1280" height="700"></canvas>
