@@ -194,5 +194,27 @@ def add_header(r):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
+
+def analyze_localy(dirname):
+    video_files = [os.path.join(dirname, video_filename) for video_filename in os.listdir(dirname)]
+    for filename in video_files:
+        sound_analize_result = analyze_sound(filename)
+        gaze_list = videoReader(filename)
+        yaw_list, pich_list = zip(*gaze_list)
+        yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
+
+        pich_mean, pich_var = np.mean(pich_list), np.var(pich_list)
+        amp_mean = sound_analize_result["volume_mean"]
+        fle_var = sound_analize_result["tone_var"]
+
+        params_for_train = {
+            "yaw_var"    : yaw_var,   # 目線の左右の分散
+            "pich_mean"  : pich_mean, # 目線の高さの平均
+            "volume_mean": amp_mean,  # 声の大小の平均
+            "tone_var"   : fle_var    # 声のトーンの分散
+        }
+        write_analysis_result(filename, params_for_train)
+
+
 if __name__ == '__main__':
     app.run()
