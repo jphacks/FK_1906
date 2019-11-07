@@ -1,3 +1,21 @@
+.progress {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  opacity: 0.2;
+  display: table;
+  
+}
+#pro{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 50px;
+  opacity: 0.2;
+
+}
 .loading {
    width: 300px;
    height: 300px;

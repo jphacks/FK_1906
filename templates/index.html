@@ -32,6 +32,11 @@
     </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
+    <div id=loading></div>
+    <div id="progress">
+      <p id="pro"></p>
+    </div>
+    <div id="all">
  
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
@@ -41,8 +46,6 @@
 
     <div class="container">
       {% if not predicted %}
-
-      <p id="progress"></p>
 
       <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
         <h3>動画をアップロードしてください</h3>
@@ -68,8 +71,8 @@
 
         {% elif predicted %}
         <script>
-
           $('#loading').attr("class", "");
+          $('#progress').attr("class", "");
           $('#all').attr("class", "");
         </script>
         <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
@@ -109,6 +112,9 @@
         });
 
         $('#btn1').on('click', function (){
+          $('#loading').attr("class", "loading");
+          $('#progress').attr("class", "progress");
+          $('#all').attr("class", "transparent")
           setInterval(function(){
             $.ajax({
               url: '{{ url_for('progress') }}',
@@ -116,7 +122,7 @@
               type: 'POST'
             }).done(function(data){
               console.log(data);
-              target = document.getElementById("progress")
+              target = document.getElementById("pro")
               if(data.progress == 0 && data.frames == 0){
                 target.innerText = "";
               }
