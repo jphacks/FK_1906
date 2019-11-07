@@ -203,6 +203,7 @@ def analyze_localy(dirname):
         yaw_list, pich_list = zip(*gaze_list)
         yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
 
+        yaw_mean,  yaw_var  = np.mean(yaw_list),  np.var(yaw_list)
         pich_mean, pich_var = np.mean(pich_list), np.var(pich_list)
         amp_mean = sound_analize_result["volume_mean"]
         fle_var = sound_analize_result["tone_var"]
