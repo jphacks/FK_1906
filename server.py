@@ -81,6 +81,13 @@ def uploads_file():
 
                 editedVideoSource = os.path.join(app.config['UPLOAD_FOLDER'], "edited.avi")
 
+                # Reset progress database
+                progress_data = Progress.query.first()
+                progress_data.movie_frames = 0
+                progress_data.movie_progress = 0
+                db_session.add(progress_data)
+                db_session.commit()
+                
                 # Add audio to output video.
                 clip_output = mp.VideoFileClip(editedVideoSource).subclip()
                 clip_output.write_videofile(editedVideoSource.replace('.avi', '.mp4'), audio='audio.mp3')
@@ -188,7 +195,10 @@ def uploaded_file(filename):
 def progress():
 
     progress = Progress.query.first()
-    return jsonify({'frames' : progress.movie_frames, 'progress' : progress.movie_progress})
+    if progress.movie_frames == 0 and progress.movie_progress == 0:
+        return jsonify({'frames' : 0, 'progress' : 0})
+    else : 
+        return jsonify({'frames' : progress.movie_frames, 'progress' : progress.movie_progress})
 
 @app.after_request
 def add_header(r):

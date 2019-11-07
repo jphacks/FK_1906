@@ -32,8 +32,7 @@
     </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
-    <div id="loading"></div>
-    <div id="all">
+ 
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
         <a class="navbar-brand" href="/" style="font-size: 4vh;">プレゼンテーションチェッカー</a>
@@ -42,6 +41,8 @@
 
     <div class="container">
       {% if not predicted %}
+
+      <p id="progress"></p>
 
       <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
         <h3>動画をアップロードしてください</h3>
@@ -56,8 +57,6 @@
         <video id="iframe1" controls autoplay muted loop style="display:none"></video><br>
         <input id="btn1" type="submit" accept="image/*;device=camera" name="picfile" value="アップロード" class="btn btn-lg btn-success" style="display:none">
       </form>
-
-      <p id="progress"></p>
 
       <p style="color: {{color}};"> {{massege}} </p>
 
@@ -117,13 +116,17 @@
               type: 'POST'
             }).done(function(data){
               console.log(data);
-              document.getElementById("progress").innerText = data.progress+ '/' +data.frames;
+              target = document.getElementById("progress")
+              if(data.progress == 0 && data.frames == 0){
+                target.innerText = "";
+              }
+              else{
+              target.innerText = data.progress+ '/' +data.frames;
+              }
             }).fail(function(){
               console.log('fail');
             });
           }, 1000);
-          $('#loading').attr("class", "loading");
-          $('#all').attr("class", "transparent")
         });
       </script>
       <script>

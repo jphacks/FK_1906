@@ -195,9 +195,7 @@ def videoReader(videoSource):
 
         print(gaze_duration)
         writer.write(image)
-
-    db_session.delete(progress)
-    db_session.commit()
+   
     video.release()
     return gaze_list
 
