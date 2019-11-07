@@ -125,7 +125,7 @@ def videoReader(videoSource):
             cv2.arrowedLine(image, *line_param, gaze_colors[j % line_color_pattern], thickness=2)
 
         # Read a frame
-        if i % int(fps/2) != 0:
+        if i % int(fps/10) != 0:
             writer.write(image)
             continue
 
