@@ -144,7 +144,7 @@ def videoReader(videoSource):
             print("count: {}/{}".format(i, num_frames))
             print("Connecting...")
             results = sendRequest(image, width, height)
-            time.sleep(0.1)
+            #  time.sleep(0.1)
 
         gaze_duration += time.time() - start_time
 
