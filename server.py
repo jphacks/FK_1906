@@ -29,6 +29,14 @@ import moviepy.editor as mp
 
 app = Flask(__name__)
 
+# 学習済みモデルのロード
+import pickle
+
+models = {}
+for filename in os.listdir('data'):
+    label = filename.split('.')[0]
+    models[label] = pickle.load(open(os.path.join('data', filename), 'rb'))
+
 
 # 画像のアップロード先のディレクトリ
 UPLOAD_FOLDER = './uploads'
@@ -119,6 +127,10 @@ def uploads_file():
                 amp_mean = sound_analize_result["volume_mean"]
                 amp_var = sound_analize_result["volume_var"]
                 fle_var = sound_analize_result["tone_var"]
+
+
+                # スコアの計算
+                # ヒューリスティック ver
                 yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
                 yaw_var_score   = digitize_score(yaw_var,   30,  10)
                 pich_mean_score = digitize_score(pich_mean, 20,  10)
@@ -127,6 +139,26 @@ def uploads_file():
 
                 gaze_score = sum((yaw_mean_score, yaw_var_score, pich_mean_score)) * 5
                 intonation_score = sum((amp_var_score, fle_var_score) * 5)
+
+                # 機械学習 ver
+                yaw_var     = yaw_var.reshape(-1, 1)
+                pich_mean   = pich_mean.reshape(-1, 1)
+                volume_mean = amp_mean.reshape(-1, 1) # Renaming
+                tone_var    = fle_var.reshape(-1, 1) # Renaming
+
+                yaw_var_score = models['yaw_var_score'].predict(yaw_var)
+                pich_mean_score = models['pich_mean_score'].predict(pich_mean)
+                volume_mean_score = models['volume_mean_score'].predict(volume_mean)
+                tone_var_score = models['tone_var_score'].predict(tone_var)
+
+                weights = np.array([0.3, 0.2, 0.3, 0.2])
+                total_score = yaw_var_score*0.3 + pich_mean_score*0.2 + volume_mean_score*0.3 + tone_var_score*0.2
+
+                print("yaw_var_score: ",     yaw_var_score)
+                print("pich_mean_score: ",   pich_mean_score)
+                print("volume_mean_score: ", volume_mean_score)
+                print("tone_var_score: ",    tone_var_score)
+                print("[total_score]: ", total_score)
 
                 kwargs = {
                     "predicted"  : True,
