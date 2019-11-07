@@ -70,22 +70,28 @@
           $('#loading').attr("class", "");
           $('#all').attr("class", "");
         </script>
-        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
-        <span>スコア <h3>{{gaze_score+intonation_score}} / 100</h3></span>
-        <span>視線 <h3>{{gaze_score}} / 60</h3></span>
-        <span>声 <h3>{{intonation_score}} / 40</h3></span>
-        <hr>
-        <span>下を向かずに話せているか <h3>{{pich_mean_score*5}} / 20</h3></span>
-        <span>目線がかたよっていないか <h3>{{yaw_mean_score*5}} / 20</h3></span>
-        <span>全体を見ているか <h3>{{yaw_var_score*5}} / 20</h3></span>
-        <span>声の強弱 <h3>{{amp_var_score*5}} / 20</h3></span>
-        <span>声のトーン <h3>{{fle_var_score*5}} / 20</h3></span>
-
-
+        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video><br>
+        <span style="font-size:2vw;">あなたの点数は</span>
+        <span class="right"><span style="font-size:8vw;">{{gaze_score+intonation_score}}</span><span style="font-size:2vw;"> / 100</span></span>
+        <br><br><br><br><br><br>
+        <div class="box">
+          <div class="center">視線</div>
+          <span style="font-size:2.5vw">下を向かずに話せているか</span>
+          <span class="right"><span style="font-size: 3vw;">{{pich_mean_score*5}}</span> / 30</span><hr>
+          <span style="font-size:2.5vw">全体を見ているか</span>
+          <span class="right"><span style="font-size: 3vw;">{{yaw_var_score*5}}</span> / 20</span>
+        </div>
+        <div class="box">
+          <div class="center">声</div>
+          <span style="font-size:2.5vw">声の大きさ</span>
+          <span class="right"><span style="font-size: 3vw;">{{amp_var_score*5}}</span> / 30</span><hr>
+          <span style="font-size:2.5vw;">声の抑揚</span>
+          <span class="right"><span style="font-size: 3vw;">{{fle_var_score*5}}</span> / 20</span>
+        </div>
         <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
         <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
-
         <!-- <h2>波形表示</h2>
+
         <div class="inner">
           <canvas id="audio-visual" width="1280" height="700"></canvas>
           <audio id="audio-player" loop></audio>
