@@ -1,9 +1,9 @@
 .loading {
-    width: 300px;
-    height: 300px;
-    border: 30px solid #000;
-    border-right: 30px solid transparent;
-    border-radius: 180px;
+    width: 15vw;
+    height: 15vw;
+    border: 1.5vw solid #000;
+    border-right: 1.5vw solid transparent;
+    border-radius: 50%;
     animation: loading 1s linear infinite;
     position: absolute;
     top: 30%;
@@ -28,14 +28,12 @@ video {
     opacity: 0.2;
 }
 .score {
-    font-size: 80px;
-    font-color: green;
-    width: 120px;
-    height: 120px;
+    width: 10vw;
+    height: 10vw;
     border-radius: 50%;
     background: skyblue;
     text-align: center;
-    line-height: 120px;
+    line-height: 10vw;
     float: right;
 }
 
@@ -68,12 +66,10 @@ video {
 
 .center {
     color: orange;
-    text-decoration : underline;
     text-align: center;
-    font-size: 40px;
+    font-size: 2vw;
 }
 
 .right {
     float: right;
-    font-size: 50px;
 }
