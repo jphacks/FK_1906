@@ -101,7 +101,6 @@ def uploads_file():
                 # Add audio to output video.
                 clip_output = mp.VideoFileClip(editedVideoSource).subclip()
 
-                set_progress_data(-2, -2) #progress go to save video
 
                 clip_output.write_videofile(editedVideoSource.replace('.avi', '.mp4'), audio='audio.mp3')
 
@@ -245,8 +244,6 @@ def progress():
         if status == 0:
             text = ""
         elif status == -1:
-            text = "動画作成中"
-        elif status == -2:
             text = "動画保存中"
 
     else :
