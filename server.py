@@ -244,6 +244,7 @@ def add_header(r):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
+import subprocess
 
 def analyze_localy(dirname):
     video_files = [os.path.join(dirname, video_filename) for video_filename in os.listdir(dirname)]
@@ -265,6 +266,8 @@ def analyze_localy(dirname):
             "tone_var"   : fle_var    # 声のトーンの分散
         }
         write_analysis_result(filename, params_for_train)
+        basename = os.path.basename(filename)
+        subprocess.run(['mv', 'uploads/edited.avi', 'uploads/edited_'+basename+'.avi'])
 
 
 if __name__ == '__main__':
