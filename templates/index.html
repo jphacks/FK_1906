@@ -87,20 +87,14 @@
           <span class="right"><span style="font-size: 3vw;">{{yaw_var_score}}</span> / 20</span>
         </div>
         <div class="box">
-          <div class="center">声</div>
-          <span style="font-size:2.5vw">声の大きさ</span>
+          <div class="center" style="color: navy">声</div>
+          <span style="font-size:2.5vw">小さすぎないか</span>
           <span class="right"><span style="font-size: 3vw;">{{volume_mean_score}}</span> / 30</span><hr>
-          <span style="font-size:2.5vw;">声の抑揚</span>
+          <span style="font-size:2.5vw;">抑揚があるか</span>
           <span class="right"><span style="font-size: 3vw;">{{tone_var_score}}</span> / 20</span>
         </div>
         <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
         <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
-        <!-- <h2>波形表示</h2>
-
-        <div class="inner">
-          <canvas id="audio-visual" width="1280" height="700"></canvas>
-          <audio id="audio-player" loop></audio>
-        </div> -->
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->

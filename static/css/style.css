@@ -63,6 +63,7 @@ video {
     padding: 0.5em 1.5em;
     border-top: solid 2px black;
     border-bottom: solid 2px black;
+    clear: both;
 }
 
 .transparent {
@@ -89,9 +90,9 @@ video {
 }*/
 
 .center {
-    color: orange;
-    text-align: center;
-    font-size: 2vw;
+    color: darkorange;
+    /* text-align: center; */
+    font-size: 4vw;
 }
 
 .right {
