@@ -61,6 +61,17 @@ def set_progress_data(frames, progress):
     db_session.add(progress_data)
     db_session.commit()
 
+def user_pich_image(pich_mean_score):
+    image_path = "/static/images/"
+    if(pich_mean_score > 20):
+        image_path += "top.png"
+    elif(pich_mean_score > 10):
+        image_path += "middle.png"
+    elif(pich_mean_score >= 0):
+        image_path += "buttom.png"
+
+    return image_path
+
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
@@ -173,6 +184,9 @@ def uploads_file():
                 print("tone_var_score: ",    tone_var_score)
                 print("[total_score]: ", total_score)
 
+                #Image Path の指定
+                pich_image_path = user_pich_image(pich_mean_score)
+
                 kwargs = {
                     "predicted"  : True,
                     "yaw_mean"   : yaw_mean,
@@ -196,6 +210,7 @@ def uploads_file():
                     "total_score": total_score,
                     "volume_mean_score": volume_mean_score,
                     "tone_var_score": tone_var_score,
+                    "pich_image_path": pich_image_path
                 }
                 params_for_train = {
                     "yaw_var"    : yaw_var,   # 目線の左右の分散
