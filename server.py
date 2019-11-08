@@ -72,6 +72,20 @@ def user_pich_image(pich_mean_score):
 
     return image_path
 
+def user_yaw_image(yaw_var_score, yaw_mean):
+    image_path = "/static/images/"
+    if(yaw_var_score >= 10):
+        image_path += "center_five.png"
+    else:
+        if(-10 <= yaw_mean and yaw_mean <= 10):
+            image_path += "center_one.png"
+        elif(yaw_mean > 10):
+            image_path += "left_two.png"
+        elif(yaw_mean < -10):
+            image_path += "right_two.png"
+
+    return image_path
+
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
@@ -156,13 +170,13 @@ def uploads_file():
 
                 # スコアの計算
                 # ヒューリスティック ver
-                yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
+                #yaw_mean_score  = digitize_score(yaw_mean,  0.3, 0.8)
                 yaw_var_score   = digitize_score(yaw_var,   30,  10)
                 pich_mean_score = digitize_score(pich_mean, 20,  10)
                 amp_var_score   = digitize_score(amp_var,   5,   10)
                 fle_var_score   = digitize_score(fle_var,   10,  20)
 
-                gaze_score = sum((yaw_mean_score, yaw_var_score, pich_mean_score)) * 5
+                #gaze_score = sum((yaw_mean_score, yaw_var_score, pich_mean_score)) * 5
                 intonation_score = sum((amp_var_score, fle_var_score) * 5)
 
                 # 機械学習 ver
@@ -183,9 +197,11 @@ def uploads_file():
                 print("volume_mean_score: ", volume_mean_score)
                 print("tone_var_score: ",    tone_var_score)
                 print("[total_score]: ", total_score)
+                print("yaw_mean:", yaw_mean)
 
                 #Image Path の指定
                 pich_image_path = user_pich_image(pich_mean_score)
+                yaw_image_path = user_yaw_image(yaw_var_score, yaw_mean)
 
                 kwargs = {
                     "predicted"  : True,
@@ -198,19 +214,18 @@ def uploads_file():
                     "right_rate" : right_rate,
                     "amp_mean"   : amp_mean,
                     "amp_var"    : amp_var,
-                    "fle_var"    : fle_var,
-                    "yaw_mean_score": yaw_mean_score,
+                    "fle_var"    : fle_var,                    
                     "yaw_var_score": yaw_var_score,
                     "pich_mean_score": pich_mean_score,
                     "amp_var_score": amp_var_score,
                     "fle_var_score": fle_var_score,
-                    "gaze_score" : gaze_score,
                     "intonation_score": intonation_score,
                     "plot_url"   : plot_b64data,
                     "total_score": total_score,
                     "volume_mean_score": volume_mean_score,
                     "tone_var_score": tone_var_score,
-                    "pich_image_path": pich_image_path
+                    "pich_image_path": pich_image_path,
+                    "yaw_image_path": yaw_image_path
                 }
                 params_for_train = {
                     "yaw_var"    : yaw_var,   # 目線の左右の分散

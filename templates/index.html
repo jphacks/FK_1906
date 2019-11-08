@@ -82,9 +82,11 @@
         <br><br><br><br><br><br>
         <div class="box">
           <div class="center">視線</div>
-          <span style="font-size:2.5vw">下を向かずに話せているか</span>
+          <span style="font-size:2.5vw">下を向かずに話せているか</span><br>
+          <img src={{pich_image_path}} class="user_image" alt="pich image" title="pich_image">
           <span class="right"><span style="font-size: 3vw;">{{pich_mean_score}}</span> / 30</span><hr>
-          <span style="font-size:2.5vw">全体を見ているか</span>
+          <span style="font-size:2.5vw">全体を見ているか</span><br>
+          <img src={{yaw_image_path}} class="user_image" alt="yaw image" title="yaw_image">
           <span class="right"><span style="font-size: 3vw;">{{yaw_var_score}}</span> / 20</span>
         </div>
         <div class="box">
@@ -95,9 +97,7 @@
           <span class="right"><span style="font-size: 3vw;">{{tone_var_score}}</span> / 20</span>
         </div>
 
-        <img src={{pich_image_path}} class="image" alt="pich image" title="pich_image">
         <!-- <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;"> -->
-
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->
