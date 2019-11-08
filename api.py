@@ -127,7 +127,7 @@ def videoReader(videoSource):
             cv2.arrowedLine(image, *line_param, gaze_colors[j % line_color_pattern], thickness=2)
 
         # Read a frame
-        if i % int(fps/2) != 0:
+        if i % int(fps/10) != 0:
             writer.write(image)
             continue
 
@@ -156,7 +156,7 @@ def videoReader(videoSource):
             db_session.add(progress)
             db_session.commit()
             results = sendRequest(image, width, height)
-            time.sleep(0.1)
+            #  time.sleep(0.1)
 
         gaze_duration += time.time() - start_time
 
