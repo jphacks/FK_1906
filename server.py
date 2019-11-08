@@ -54,6 +54,13 @@ def allwed_file(filename):
     # OKなら１、だめなら0
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def set_progress_data(frames, progress):
+    progress_data = Progress.query.first()
+    progress_data.movie_frames = frames
+    progress_data.movie_progress = progress
+    db_session.add(progress_data)
+    db_session.commit()
+
 # ファイルを受け取る方法の指定
 @app.route('/', methods=['GET', 'POST'])
 def uploads_file():
@@ -87,19 +94,18 @@ def uploads_file():
 
                 gaze_list = videoReader(videoSource)
 
+                set_progress_data(-1, -1) #progress go to write video
+                
                 editedVideoSource = os.path.join(app.config['UPLOAD_FOLDER'], "edited.avi")
-
-                # Reset progress database
-                progress_data = Progress.query.first()
-                progress_data.movie_frames = 0
-                progress_data.movie_progress = 0
-                db_session.add(progress_data)
-                db_session.commit()
 
                 # Add audio to output video.
                 clip_output = mp.VideoFileClip(editedVideoSource).subclip()
+
+                set_progress_data(-2, -2) #progress go to save video
+
                 clip_output.write_videofile(editedVideoSource.replace('.avi', '.mp4'), audio='audio.mp3')
 
+                set_progress_data(0, 0) #progress go to finish and database reset
 
                 yaw_list, pich_list = zip(*gaze_list)
                 yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
@@ -229,10 +235,24 @@ def uploaded_file(filename):
 def progress():
 
     progress = Progress.query.first()
-    if progress.movie_frames == 0 and progress.movie_progress == 0:
-        return jsonify({'frames' : 0, 'progress' : 0})
+    text = ""
+    if progress is None:
+        text = "処理中"
+
+    elif progress.movie_frames <= 0 and progress.movie_progress <= 0:
+        status = progress.movie_frames
+
+        if status == 0:
+            text = ""
+        elif status == -1:
+            text = "動画作成中"
+        elif status == -2:
+            text = "動画保存中"
+
     else :
-        return jsonify({'frames' : progress.movie_frames, 'progress' : progress.movie_progress})
+        text = str(progress.movie_progress) + "/" + str(progress.movie_frames)
+
+    return jsonify({'text' : text})
 
 @app.after_request
 def add_header(r):
