@@ -179,8 +179,8 @@ def videoReader(videoSource):
             center = ((reye[0]+leye[0])/2, (reye[1]+leye[1])/2)
             gazeTop = (center[0] + gazeLen * math.sin(math.radians(gaze[0])), center[1] + gazeLen * math.sin(math.radians(gaze[1])))
             gaze_line_params.append(((int(center[0]), int(center[1])), (int(gazeTop[0]), int(gazeTop[1]))))
-            if len(gaze_line_params) > 5:
-                gaze_line_params.pop(0)
+            # if len(gaze_line_params) > 5:
+            #     gaze_line_params.pop(0)
 
         # Show the video
         if displayFlag:
@@ -195,7 +195,7 @@ def videoReader(videoSource):
 
         print(gaze_duration)
         writer.write(image)
-   
+
     video.release()
     return gaze_list
 

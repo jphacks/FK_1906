@@ -95,7 +95,7 @@ def uploads_file():
                 progress_data.movie_progress = 0
                 db_session.add(progress_data)
                 db_session.commit()
-                
+
                 # Add audio to output video.
                 clip_output = mp.VideoFileClip(editedVideoSource).subclip()
                 clip_output.write_videofile(editedVideoSource.replace('.avi', '.mp4'), audio='audio.mp3')
@@ -127,7 +127,7 @@ def uploads_file():
                 img = io.BytesIO()
                 plt.hist(yaw_list, bins=50)
                 plt.savefig(img, format='png')
-                img.seek(0)
+                # img.seek(0)
 
                 plot_b64str = base64.b64encode(img.getvalue()).decode("utf-8")
                 plot_b64data = "data:image/png;base64,{}".format(plot_b64str)
@@ -155,13 +155,12 @@ def uploads_file():
                 volume_mean = amp_mean.reshape(-1, 1) # Renaming
                 tone_var    = fle_var.reshape(-1, 1) # Renaming
 
-                yaw_var_score = models['yaw_var_score'].predict(yaw_var)
-                pich_mean_score = models['pich_mean_score'].predict(pich_mean)
-                volume_mean_score = models['volume_mean_score'].predict(volume_mean)
-                tone_var_score = models['tone_var_score'].predict(tone_var)
+                yaw_var_score = int(models['yaw_var_score'].predict(yaw_var)*0.2)
+                pich_mean_score = int(models['pich_mean_score'].predict(pich_mean)*0.3)
+                volume_mean_score = int(models['volume_mean_score'].predict(volume_mean)*0.3)
+                tone_var_score = int(models['tone_var_score'].predict(tone_var)*0.2)
 
-                weights = np.array([0.3, 0.2, 0.3, 0.2])
-                total_score = yaw_var_score*0.3 + pich_mean_score*0.2 + volume_mean_score*0.3 + tone_var_score*0.2
+                total_score = yaw_var_score + pich_mean_score + volume_mean_score + tone_var_score
 
                 print("yaw_var_score: ",     yaw_var_score)
                 print("pich_mean_score: ",   pich_mean_score)
@@ -188,7 +187,10 @@ def uploads_file():
                     "fle_var_score": fle_var_score,
                     "gaze_score" : gaze_score,
                     "intonation_score": intonation_score,
-                    "plot_url"   : plot_b64data
+                    "plot_url"   : plot_b64data,
+                    "total_score": total_score,
+                    "volume_mean_score": volume_mean_score,
+                    "tone_var_score": tone_var_score,
                 }
                 params_for_train = {
                     "yaw_var"    : yaw_var,   # 目線の左右の分散
@@ -229,7 +231,7 @@ def progress():
     progress = Progress.query.first()
     if progress.movie_frames == 0 and progress.movie_progress == 0:
         return jsonify({'frames' : 0, 'progress' : 0})
-    else : 
+    else :
         return jsonify({'frames' : progress.movie_frames, 'progress' : progress.movie_progress})
 
 @app.after_request
