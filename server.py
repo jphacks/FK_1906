@@ -300,7 +300,14 @@ def analyze_localy(dirname):
     for filename in video_files:
         sound_analize_result = analyze_sound(filename)
         gaze_list = videoReader(filename)
-        yaw_list, pich_list = zip(*gaze_list)
+        try:
+            yaw_list, pich_list = zip(*gaze_list)
+        except:
+            print("##############################")
+            print("gaze_list: ", gaze_list)
+            print("##############################")
+            continue
+       
         yaw_list, pich_list = np.array(yaw_list), np.array(pich_list)
 
         yaw_mean,  yaw_var  = np.mean(yaw_list),  np.var(yaw_list)
@@ -320,4 +327,4 @@ def analyze_localy(dirname):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
