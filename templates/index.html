@@ -76,7 +76,8 @@
           $('#all').attr("class", "");
         </script>
         <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay loop></video><br>
-        <span style="font-size:2vw;">あなたの点数は</span>
+        <a href="/uploads/edited.mp4" download="edited.mp4" class="btn btn-primary" style="float: right">ダウンロード</a><br><hr>
+        <span style="font-size:2vw; clear: both;">あなたの点数は</span>
         <span class="right"><span style="font-size:8vw;">{{total_score}}</span><span style="font-size:2vw;"> / 100</span></span>
         <br><br><br><br><br><br>
         <div class="box">
@@ -93,8 +94,8 @@
           <span style="font-size:2.5vw;">抑揚があるか</span>
           <span class="right"><span style="font-size: 3vw;">{{tone_var_score}}</span> / 20</span>
         </div>
-        <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
-        <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
+        <!-- <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;"> -->
+
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->
