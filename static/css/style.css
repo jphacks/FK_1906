@@ -96,3 +96,7 @@ video {
 .right {
     float: right;
 }
+
+img.user_image {
+    width: 40vw;
+}
