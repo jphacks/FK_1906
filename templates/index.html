@@ -123,13 +123,8 @@
               type: 'POST'
             }).done(function(data){
               console.log(data);
-              target = document.getElementById("pro")
-              if(data.progress == 0 && data.frames == 0){
-                target.innerText = "";
-              }
-              else{
-              target.innerText = data.progress+ '/' +data.frames;
-              }
+              target = document.getElementById("pro");
+              target.innerText = data.text;              
             }).fail(function(){
               console.log('fail');
             });

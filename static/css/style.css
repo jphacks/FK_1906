@@ -1,12 +1,11 @@
 .progress {
-  width: 300px;
-  height: 300px;
+  width: 20vw;
+  height: 20vw;
   position: absolute;
   top: 30%;
   left: 40%;
   /* opacity: 0.8; */
   background-color: rgba( 255, 255, 255, 0.2 );
-  color: black;
   display: table;
 
 }
@@ -14,13 +13,14 @@
   display: table-cell;
   text-align: center;
   vertical-align: middle;
-  font-size: 50px;
-  opacity: 0.2;
+  font-size: 3vw;
+  color: #808080;
+  /* opacity: 0.2;*/
 
 }
 .loading {
-    width: 15vw;
-    height: 15vw;
+    width: 20vw;
+    height: 20vw;
     border: 1.5vw solid #000;
     border-right: 1.5vw solid transparent;
     border-radius: 50%;
@@ -44,9 +44,7 @@
 video {
     width: 100%;
 }
-.transparent {
-    opacity: 0.2;
-}
+
 .score {
     width: 10vw;
     height: 10vw;
