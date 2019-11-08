@@ -4,7 +4,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
@@ -31,8 +32,12 @@
     </script>
   </head>
   <body style="background-color: #EEF9FF; color: #5B5B5B;">
-    <div id="loading"></div>
+    <div id=loading></div>
+    <div id="progress">
+      <p id="pro"></p>
+    </div>
     <div id="all">
+
     <nav class="navbar navbar-light" style="background-color: #AAD6EC;">
       <div class="container">
         <a class="navbar-brand" href="/" style="font-size: 4vh;">プレゼンテーションチェッカー</a>
@@ -43,7 +48,7 @@
       {% if not predicted %}
 
       <form id="uploadForm"  action="/" method="POST"  enctype="multipart/form-data">
-        <h3>動画をアップロードしてください</h3>
+        <div style="font-size: 3vh;">動画をアップロードしてください</div>
         <div class="input-group">
           <label class="input-group-btn">
             <span class="btn btn-primary">
@@ -66,37 +71,39 @@
 
         {% elif predicted %}
         <script>
-
           $('#loading').attr("class", "");
+          $('#progress').attr("class", "");
           $('#all').attr("class", "");
         </script>
-        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay muted loop></video>
-        <span>スコア <h3>{{gaze_score+intonation_score}} / 100</h3></span>
-        <span>視線 <h3>{{gaze_score}} / 60</h3></span>
-        <span>声 <h3>{{intonation_score}} / 40</h3></span>
-        <hr>
-        <span>下を向かずに話せているか <h3>{{pich_mean_score*5}} / 20</h3></span>
-        <span>目線がかたよっていないか <h3>{{yaw_mean_score*5}} / 20</h3></span>
-        <span>全体を見ているか <h3>{{yaw_var_score*5}} / 20</h3></span>
-        <span>声の強弱 <h3>{{amp_var_score*5}} / 20</h3></span>
-        <span>声のトーン <h3>{{fle_var_score*5}} / 20</h3></span>
+        <video id="preview" src="/uploads/edited.mp4" title="edited.mp4" controls autoplay loop></video><br>
+        <a href="/uploads/edited.mp4" download="edited.mp4" class="btn btn-primary" style="float: right">ダウンロード</a><br><hr>
+        <span style="font-size:3vw; clear: both;">あなたの点数は</span>
+        <span class="right"><span style="font-size:8vw;">{{total_score}}</span><span style="font-size:2vw;"> / 100</span></span>
+        <br><br><br><br><br><br>
+        <div class="box">
+          <div class="center">視線</div>
+          <span style="font-size:2.5vw">下を向かずに話せているか</span><br>
+          <img src={{pich_image_path}} class="user_image" alt="pich image" title="pich_image">
+          <span class="right"><span style="font-size: 3vw;">{{pich_mean_score}}</span> / 30</span><hr>
+          <span style="font-size:2.5vw">全体を見ているか</span><br>
+          <img src={{yaw_image_path}} class="user_image" alt="yaw image" title="yaw_image">
+          <span class="right"><span style="font-size: 3vw;">{{yaw_var_score}}</span> / 20</span>
+        </div>
+        <div class="box">
+          <div class="center" style="color: navy">声</div>
+          <span style="font-size:2.5vw">小さすぎないか</span>
+          <span class="right"><span style="font-size: 3vw;">{{volume_mean_score}}</span><span style="font-size: 1vw;"> / 30</span></span><hr>
+          <span style="font-size:2.5vw;">抑揚があるか</span>
+          <span class="right"><span style="font-size: 3vw;">{{tone_var_score}}</span><span style="font-size: 1vw;"> / 20</span></span>
+        </div>
 
-
-        <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;">
-        <a href="/uploads/edited.mp4" download="edited.mp4">ダウンロード</a>
-
-        <!-- <h2>波形表示</h2>
-        <div class="inner">
-          <canvas id="audio-visual" width="1280" height="700"></canvas>
-          <audio id="audio-player" loop></audio>
-        </div> -->
+        <!-- <img src={{plot_url}} alt="グラフ画像" title="グラフ画像" style="width: 30%;"> -->
         {% endif %}
       </p>
       <!-- ######################## RESULT END######################## -->
 
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
       <script>
@@ -108,8 +115,22 @@
         });
 
         $('#btn1').on('click', function (){
-            $('#loading').attr("class", "loading");
-            $('#all').attr("class", "transparent")
+          $('#loading').attr("class", "loading");
+          $('#progress').attr("class", "progress");
+          $('#all').attr("class", "transparent")
+          setInterval(function(){
+            $.ajax({
+              url: '{{ url_for('progress') }}',
+              contentType: 'application/json;charset=UTF-8',
+              type: 'POST'
+            }).done(function(data){
+              console.log(data);
+              target = document.getElementById("pro");
+              target.innerText = data.text;              
+            }).fail(function(){
+              console.log('fail');
+            });
+          }, 1000);
         });
       </script>
       <script>
@@ -127,7 +148,6 @@
           });
         });
        </script>
-    <script type="text/javascript" src="/static/js/effect.js"></script>
     </div>
   </body>
 </html>

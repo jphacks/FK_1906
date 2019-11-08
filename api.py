@@ -20,6 +20,8 @@ import queue
 
 import numpy as np
 
+from models.models import Progress
+from models.database import db_session
 ## Settings ###################################################################
 
 endPoint = 'http://a8b88762ef01211e9950f0eacce6e863-2021028779.ap-northeast-1.elb.amazonaws.com'       # for JPHACKS 2019
@@ -62,7 +64,7 @@ def sendRequest(image, width, height):
     headers = {'Content-Type' : 'application/json'}
     data = json.dumps(reqPara).encode('utf-8')
     try:
-        res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=5)
+        res = requests.post(url, params=params, data=data, headers=headers, proxies=proxies, timeout=10)
     except:
         print('Error! Can not connect to the API.')
         return ["NONE"]
@@ -125,7 +127,7 @@ def videoReader(videoSource):
             cv2.arrowedLine(image, *line_param, gaze_colors[j % line_color_pattern], thickness=2)
 
         # Read a frame
-        if i % int(fps/2) != 0:
+        if i % int(fps/10) != 0:
             writer.write(image)
             continue
 
@@ -143,8 +145,18 @@ def videoReader(videoSource):
         while results == ["NONE"]:
             print("count: {}/{}".format(i, num_frames))
             print("Connecting...")
+
+            progress = Progress.query.first()
+            if progress is None:
+                progress = Progress(movie_frames=num_frames, movie_progress=i)
+            else :
+                progress.movie_frames = num_frames
+                progress.movie_progress = i
+
+            db_session.add(progress)
+            db_session.commit()
             results = sendRequest(image, width, height)
-            time.sleep(3)
+            #  time.sleep(0.1)
 
         gaze_duration += time.time() - start_time
 
@@ -167,8 +179,8 @@ def videoReader(videoSource):
             center = ((reye[0]+leye[0])/2, (reye[1]+leye[1])/2)
             gazeTop = (center[0] + gazeLen * math.sin(math.radians(gaze[0])), center[1] + gazeLen * math.sin(math.radians(gaze[1])))
             gaze_line_params.append(((int(center[0]), int(center[1])), (int(gazeTop[0]), int(gazeTop[1]))))
-            if len(gaze_line_params) > 5:
-                gaze_line_params.pop(0)
+            # if len(gaze_line_params) > 5:
+            #     gaze_line_params.pop(0)
 
         # Show the video
         if displayFlag:

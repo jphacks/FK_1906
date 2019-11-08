@@ -1,29 +1,102 @@
+.progress {
+  width: 20vw;
+  height: 20vw;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  /* opacity: 0.8; */
+  background-color: rgba( 255, 255, 255, 0.2 );
+  display: table;
+
+}
+#pro{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 3vw;
+  color: #808080;
+  /* opacity: 0.2;*/
+
+}
 .loading {
-   width: 300px;
-   height: 300px;
-   border: 30px solid #000;
-   border-right: 30px solid transparent;
-   border-radius: 180px;
-   animation: loading 1s linear infinite;
-   position: absolute;
-   top: 30%;
-   left: 40%;
+    width: 20vw;
+    height: 20vw;
+    border: 1.5vw solid #000;
+    border-right: 1.5vw solid transparent;
+    border-radius: 50%;
+    animation: loading 1s linear infinite;
+    position: absolute;
+    top: 30%;
+    left: 40%;
 }
 @keyframes loading {
-0% {
-}
-50% {
-  opacity: .6;
-}
-100% {
-  transform: rotate(360deg);
-  transform-origin: 50% 50%;
-  opacity: .3;
-}
+    0% {
+    }
+    50% {
+        opacity: .6;
+    }
+    100% {
+        transform: rotate(360deg);
+        transform-origin: 50% 50%;
+        opacity: .3;
+    }
 }
 video {
-   width: 100%;
+    width: 100%;
 }
+
+.score {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    background: skyblue;
+    text-align: center;
+    line-height: 10vw;
+    float: right;
+}
+
+.box{
+    margin:2em 0;
+    position: relative;
+    padding: 0.5em 1.5em;
+    border-top: solid 2px black;
+    border-bottom: solid 2px black;
+    clear: both;
+}
+
 .transparent {
    opacity: 0.2;
+}
+.box:before, .box:after{
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 2px;
+    height: -webkit-calc(100% + 20px);
+    height: calc(100% + 20px);
+    background-color: black;
+}
+.box:before {
+    left: 10px;
+}
+.box:after {
+    right: 10px;
+}
+/*.box p {
+    margin: 0;
+    padding: 0;
+}*/
+
+.center {
+    color: darkorange;
+    /* text-align: center; */
+    font-size: 4vw;
+}
+
+.right {
+    float: right;
+}
+
+img.user_image {
+    width: 40vw;
 }

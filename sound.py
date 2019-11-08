@@ -1,62 +1,65 @@
-import sys
-
 import numpy as np
+import audiosegment
+from matplotlib import pyplot as plt
+import time
 from pydub import AudioSegment
-from scipy.fftpack import fft, fftfreq
+
+plt.ion()
+    
+def analyze_sound(video_source):
+    volume_mean, volume_var = analyze_volume(video_source)
+    tone_var = analyze_tone(video_source, display=False)
+    return {'volume_mean': volume_mean, 'volume_var': volume_var, 'tone_var': tone_var}
 
 
-def analyze_sound(video_source, display=False):
+def analyze_volume(video_source):
     sound = AudioSegment.from_file(video_source, format="mp4")
-    sound_data = np.array(sound.get_array_of_samples())
-    sound_data = sound_data[10:-10] / 100
-    amplitudes = np.abs(sound_data)
+    sound = np.array(sound.get_array_of_samples())
+    sound = np.abs(sound)
+    mean = sound.mean()
+    var  = sound.var()
+    return mean, var
+
+
+def analyze_tone(video_source, display=False):
+    sound = audiosegment.from_file(video_source).resample(sample_rate_Hz=24000, sample_width=2, channels=1)
+    hist_bins, hist_vals = sound.fft()
+    hist_vals_real_normed = np.abs(hist_vals) / len(hist_vals)
+    mean = np.mean(hist_vals_real_normed)
     
+    max_hz, min_hz = 1200, 400
+    num_samples = len(sound)
+    offset = 1000
+    total_data = np.zeros(max_hz-min_hz)
+    for i in range(0, num_samples-offset, offset):
+        hist_bins, hist_vals = sound[i:i+offset].fft()
+        hist_bins, hist_vals = hist_bins[min_hz:max_hz], hist_vals[min_hz:max_hz]
+        hist_vals = np.abs(hist_vals) / len(hist_vals)
+        hist_vals = np.where(hist_vals >= 500, hist_vals / mean, 0)
+        total_data += hist_vals
 
-    amplitudes_mean = np.mean(amplitudes)
-    amplitudes_var  = np.var(amplitudes)
-    print("amplitudes_mean: ", amplitudes_mean)
-    print("amplitudes_var: ", amplitudes_var)
+        if display:
+            plt.plot(hist_bins, hist_vals)
+            plt.xlabel("Hz")
+            plt.ylabel("dB")
+            plt.draw()
+            plt.pause(1)
 
-    num_samples = sound_data.shape[0]
-    fps = 30
-    dt = 1.0 / fps
-    t = np.arange(0, num_samples*dt, dt)
-    f_data = fft(sound_data)
-    freq = np.linspace(0, fps, num_samples)
+    mean = np.mean(total_data)
+    #  total_data /= mean
+    distribution = np.array([], dtype="int32")
+    for i, num_samples in enumerate(total_data):
+        hz = i + min_hz
+        hz_array = np.full(int(num_samples), hz)
+        distribution = np.append(distribution, hz_array)
 
-    
-    F = np.fft.fft(f_data)
-    Amp = np.abs(F) / 10e5 /2
-    fleurie_mean = np.mean(Amp)
-    fleurie_var = np.var(Amp)
-    print("fleurie_mean: ", fleurie_mean)
-    print("fleurie_var: ", fleurie_var)
-
-    if display:
-        import matplotlib.pyplot as plt
-
-        plt.figure()
-        plt.subplot(121)
-        plt.plot(t, f_data, label='f(n)')
-        plt.xlabel("Time", fontsize=20)
-        plt.ylabel("Signal", fontsize=20)
-        plt.grid()
-        leg = plt.legend(loc=1, fontsize=25)
-        leg.get_frame().set_alpha(1)
-        plt.subplot(122)
-        plt.plot(freq, Amp, label='|F(k)|')
-        plt.xlabel('Frequency', fontsize=20)
-        plt.ylabel('Amplitude', fontsize=20)
-        plt.grid()
-        leg = plt.legend(loc=1, fontsize=25)
-        leg.get_frame().set_alpha(1)
-        plt.show()
-
-    return {
-        'amplitudes': {'mean': amplitudes_mean, 'var': amplitudes_var},
-        'fleurie':    {'mean': fleurie_mean,    'var': fleurie_var}
-    }
+    return np.var(distribution)
 
 if __name__ == '__main__':
-    source = sys.argv[1]
-    analyze_sound(source, display=True)
+    import sys
+
+    video_source = sys.argv[1]
+    print("tone var: ", analyze_tone(video_source, True))
+    volume_result = analyze_volume(video_source)
+    print("volume:", volume_result)
+    time.sleep(10)

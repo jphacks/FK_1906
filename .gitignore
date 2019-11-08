@@ -1,2 +1,7 @@
 **/venv
 __pycache__
+**/uploads
+results/*
+audio.mp3
+.ipynb_checkpoints/
+!.gitkeep
