@@ -6,7 +6,6 @@
   left: 40%;
   /* opacity: 0.8; */
   background-color: rgba( 255, 255, 255, 0.2 );
-  color: black;
   display: table;
 
 }
@@ -15,7 +14,8 @@
   text-align: center;
   vertical-align: middle;
   font-size: 3vw;
-  opacity: 0.2;
+  color: #808080;
+  /* opacity: 0.2;*/
 
 }
 .loading {
@@ -44,9 +44,7 @@
 video {
     width: 100%;
 }
-.transparent {
-    opacity: 0.2;
-}
+
 .score {
     width: 10vw;
     height: 10vw;
